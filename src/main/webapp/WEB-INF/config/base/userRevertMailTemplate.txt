@@ -1,0 +1,7 @@
+<h1>找回成功</h1>
+<p>${nickname}你好！您的新密码是 <strong>${password}</strong><p>
+<p>请尽快登录 <a href="${domain}page/modifyPassword.html" target="_blank">修改密码</a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>该邮件来自 ${siteName}</p>

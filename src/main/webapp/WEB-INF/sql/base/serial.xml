@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<!-- 命名空间。 -->
+	<namespace>base.serial</namespace>
+
+
+	<!-- 检查。 -->
+	<sql id="exists"><![CDATA[
+		SELECT 1 FROM serial WHERE siteId = '$siteId' AND appId = '$appId';
+	]]></sql>
+
+	<!-- 创建。 -->
+	<sql id="create"><![CDATA[
+		INSERT INTO serial (
+			siteId, appId, secret, serialKey, serialCode,
+			data, description
+		)
+		VALUES (
+			'$siteId', '$appId', '$secret', '$serialKey', '$serialCode',
+			'$data', '$!description'
+		);
+	]]></sql>
+	
+	
+	<!-- 重新生成加密种子。 -->
+	<sql id="regenerateSecret"><![CDATA[
+		UPDATE serial
+		   SET secret = '$secret'
+		 WHERE siteId = '$siteId',
+		   AND appId = '$appId'
+		;
+	]]></sql>
+	
+	
+	<!-- 重新生成加密种子。 -->
+	<sql id="regenerateSerial"><![CDATA[
+		UPDATE serial
+		   SET serialKey = '$serialKey',
+		   	   serialCode = '$serialCode'
+		 WHERE siteId = '$siteId',
+		   AND appId = '$appId'
+		;
+	]]></sql>
+	
+	
+	<!-- 查询某站点应用的上报数据。 -->
+	<sql id="selectTheData"><![CDATA[
+		SELECT data FROM serial WHERE siteId = '$siteId' AND appId = '$appId';
+	]]></sql>
+</root>

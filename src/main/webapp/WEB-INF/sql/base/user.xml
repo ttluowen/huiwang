@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<!-- 命名空间。 -->
+	<namespace>base.user</namespace>
+
+
+	<!-- 登录。 -->
+	<sql id="login"><![CDATA[
+		SELECT *
+		  FROM base_user
+		 WHERE username = '$username'
+		   AND password = '$password'
+		;
+	]]></sql>
+	
+	<!-- 快捷登录。 -->
+	<sql id="quickLogin"><![CDATA[
+		SELECT *
+		  FROM base_user_quickLogin
+		 WHERE quickLoginCode = '$quickLoginCode'
+		   AND device = '$device'
+		   AND userAgent = '$userAgent'
+		;
+	]]></sql>
+
+	<!-- 更新快捷登录次数。 -->
+	<sql id="updateQuickLoginTimes"><![CDATA[
+		UPDATE base_user_quickLogin
+		   SET loginTimes = loginTimes + 1
+		 WHERE id = $id
+		   AND userId = $userId
+	]]></sql>
+	
+	<!-- 生成快捷登录码。 -->
+	<sql id="generateQuickLoginCode"><![CDATA[
+		INSERT INTO base_user_quickLogin (
+			userId, quickLoginCode, device, userAgent, datetime,
+			expireDatetime, loginTimes
+		)
+		VALUES (
+			$userId, '$quickLoginCode', '$device', '$userAgent', '$datetime',
+			'$expireDatetime', 0
+		);
+	]]></sql>
+
+	<!-- 清理指定快捷登录码。 -->
+	<sql id="clearQuickLoginCode"><![CDATA[
+		DELETE
+		  FROM base_user_quickLogin
+		 WHERE userId = $userId
+		#if ($device && $device != '')
+		   AND device = '$device'
+		#end
+		#if ($userAgent && $userAgent != '')
+		   AND userAgent = '$userAgent'
+		#end
+		;
+	]]></sql>
+
+	<!-- 查询用户详情。 -->
+	<sql id="getProfile"><![CDATA[
+		SELECT userId, username, nickname, email, mobile, lastLoginDatetime, createDatetime, status,
+			   DATE_FORMAT(createDatetime,'%Y-%m-%d') AS createDate
+		  FROM base_user
+		 WHERE 1 = 1
+		#if ($userId && $userId != 0)
+		   AND userId = $userId
+		#end
+		#if ($username && $username != '')
+		   AND username = '$username'
+		#end
+		#if ($email && $email != '')
+		   AND email = '$email'
+		#end
+		;
+	]]></sql>
+
+	<!-- 更新最后次更新信息。 -->
+	<sql id="updateLastLogin"><![CDATA[
+		UPDATE base_user SET lastLoginDatetime = '$datetime' WHERE userId = $userId;
+	]]></sql>
+	
+	
+	<!-- 注册时的用户信息检测。 -->
+	<sql id="registCheck"><![CDATA[
+		SELECT 1
+		  FROM base_user
+		 WHERE username = '$username'
+		    OR email = '$email'
+		;
+	]]></sql>
+	
+	
+	<!-- 注册。 -->
+	<sql id="regist"><![CDATA[
+		INSERT INTO base_user (
+			userId,
+			username,
+			nickname,
+			password,
+			email,
+			lastLoginDatetime,
+			createDatetime,
+			status
+		)
+		VALUES (
+			NULL,
+			'$username',
+			'$nickname',
+			'$password',
+			'$email',
+			'1900-01-01',
+			NOW(),
+			$status
+		);
+	]]></sql>
+	
+	
+	<!-- 设置用户新密码。 -->
+	<sql id="setNewPassword"><![CDATA[
+		UPDATE base_user
+		   SET password = '$password'
+		 WHERE username = '$username'
+		;
+	]]></sql>
+	
+	
+	<!-- 修改密码。 -->
+	<sql id="modifyPassword"><![CDATA[
+		UPDATE base_user
+		   SET password = '$password'
+		 WHERE username = '$username'
+		   AND password = '$original'
+		;
+	]]></sql>
+	
+	
+	<!-- 删除注册验证信息。 -->
+	<sql id="deleteRegistCode"><![CDATA[
+		DELETE FROM base_user_regist WHERE `username` = '$username';
+	]]></sql>
+	
+	<!-- 添加注册验证信息。 -->
+	<sql id="insertRegistCode"><![CDATA[
+		INSERT INTO base_user_regist (
+			`username`,
+			code,
+			datetime,
+			expireDatetime
+		)
+		VALUES (
+			'$username',
+			'$code',
+			NOW(),
+			'$expireDatetime'
+		);
+	]]></sql>
+	
+	<!-- 查询注册验证码。 -->
+	<sql id="checkRegistCode"><![CDATA[
+		SELECT *
+		  FROM base_user_regist
+		 WHERE username = '$username'
+		   AND code = '$code'
+		;
+	]]></sql>
+	
+	
+	<!-- 修改用户状态。 -->
+	<sql id="modifyUserStatus"><![CDATA[
+		UPDATE base_user
+		   SET status = $status
+		 WHERE userId = $userId
+		;
+	]]></sql>
+	
+	
+	<!-- 删除注册验证信息。 -->
+	<sql id="deleteRevertCode"><![CDATA[
+		DELETE FROM base_user_revert WHERE `username` = '$username';
+	]]></sql>
+	
+	<!-- 添加重置密码信息。 -->
+	<sql id="insertRevertCode"><![CDATA[
+		INSERT INTO base_user_revert (
+			`username`,
+			newPassword,
+			datetime,
+			expireDatetime
+		)
+		VALUES (
+			'$username',
+			'$password',
+			NOW(),
+			'$expireDatetime'
+		);
+	]]></sql>
+</root>

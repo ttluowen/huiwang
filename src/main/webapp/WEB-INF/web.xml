@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="Portal" version="3.1">
+  <display-name>YiYuen</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  <filter>
+    <filter-name>visit</filter-name>
+    <filter-class>com.yy.web.sys.filter.VisitFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>visit</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <listener>
+    <description>Init system configs.</description>
+    <listener-class>com.yy.web.sys.listeners.InitListener</listener-class>
+  </listener>
+</web-app>

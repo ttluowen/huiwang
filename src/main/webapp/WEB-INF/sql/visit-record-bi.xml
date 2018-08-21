@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<!-- 命名空间。 -->
+	<namespace>visit.record.bi</namespace>
+	
+	
+	<sql id="userAgentCountList"><![CDATA[
+		SELECT ip, userAgent, COUNT(*) AS c
+		  FROM visit_record_data
+		 WHERE datetime BETWEEN '$beginDate' AND '$endDate'
+		 GROUP by ip, userAgent
+		 ORDER BY c DESC
+		 LIMIT $beginIndex, $pageSize
+		;
+	]]></sql>
+	
+	<sql id="userAgentCountCount"><![CDATA[
+		SELECT COUNT(*) AS count
+		  FROM (
+				SELECT ip, userAgent, COUNT(*) AS c
+				  FROM visit_record_data
+				 WHERE datetime BETWEEN '$beginDate' AND '$endDate'
+				 GROUP by ip, userAgent
+				) AS t1
+		;
+	]]></sql>
+	
+	
+	<sql id="theUserAgentList"><![CDATA[
+		SELECT *
+		  FROM visit_record_data
+		 WHERE ip = '$ip'
+		   AND userAgent = '$userAgent'
+		   AND datetime BETWEEN '$beginDate' AND '$endDate'
+		;
+	]]></sql>
+</root>

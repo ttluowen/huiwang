@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<!-- 命名空间。 -->
+	<namespace>base.frontStorage</namespace>
+
+
+	<!-- 获取。 -->
+	<sql id="get"><![CDATA[
+		SELECT value
+		  FROM base_front_storage
+		 WHERE `key` = '$key'
+		   AND userAgent = '$userAgent'
+		;
+	]]></sql>
+	
+	<!-- 更新。 -->
+	<sql id="update"><![CDATA[
+		UPDATE base_front_storage
+		   SET value = '$value'
+		 WHERE `key` = '$key'
+		   AND userAgent = '$userAgent'
+		;
+	]]></sql>
+	
+	<!-- 新增。 -->
+	<sql id="add"><![CDATA[
+		INSERT INTO base_front_storage (
+			`key`, userAgent, value
+		)
+		VALUES (
+			'$key', '$userAgent', '$value'
+		);
+	]]></sql>
+
+	<!-- 删除。 -->
+	<sql id="remove"><![CDATA[
+		UPDATE base_front_storage
+		 WHERE `key` = '$key'
+		   AND userAgent = '$userAgent'
+		;
+	]]></sql>
+</root>

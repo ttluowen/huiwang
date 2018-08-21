@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<!-- 命名空间。 -->
+	<namespace>version</namespace>
+
+
+	<sql id="query"><![CDATA[
+		SELECT * FROM base_version;
+	]]></sql>
+	
+	
+	<sql id="update"><![CDATA[
+		UPDATE base_version
+		   SET number = $number,
+		   	   string = '$string',
+		   	   datetime = '$datetime'
+		;
+	]]></sql>
+	
+	
+	<sql id="updateSiteVersion"><![CDATA[
+		UPDATE base_version_site
+		   SET version = '$version',
+		   	   updatetime = '$datetime'
+		 WHERE siteId = '$siteId'
+		;
+	]]></sql>
+</root>

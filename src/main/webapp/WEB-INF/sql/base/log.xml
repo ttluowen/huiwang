@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<!-- 命名空间。 -->
+	<namespace>base.log</namespace>
+
+
+	<!-- 获取。 -->
+	<sql id="clean"><![CDATA[
+		DELETE
+		  FROM base_visit_log
+		 WHERE `datetime` < ADDDATE(NOW(), -${beforeDay})
+		;
+	]]></sql>
+</root>

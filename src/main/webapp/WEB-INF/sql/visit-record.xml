@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<!-- 命名空间。 -->
+	<namespace>visit.record</namespace>
+
+
+	<sql id="getParsePoint"><![CDATA[
+		SELECT * FROM visit_record_parse;
+	]]></sql>
+	
+	
+	<sql id="getTimestampList"><![CDATA[
+		SELECT `timestamp` FROM visit_record_data ORDER BY id DESC LIMIT 1000000;
+	]]></sql>
+	
+	
+	<sql id="insert"><![CDATA[
+		INSERT INTO visit_record_data(
+			id, ip, url, method, userAgent, referer, headers, datetime, `timestamp`
+		)
+		VALUES(
+			NULL, '$ip', '$url', '$method', '$userAgent', '$referer', '$headers', '$datetime', '$timestamp'
+		);
+	]]></sql>
+	
+	
+	<sql id="updateLastPoint"><![CDATA[
+		UPDATE visit_record_parse
+		   SET date = '$date',
+		   	   `timestamp` = '$timestamp'
+		;
+	]]></sql>
+	
+</root>

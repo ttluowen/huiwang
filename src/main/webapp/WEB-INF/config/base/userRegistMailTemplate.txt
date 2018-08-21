@@ -1,0 +1,9 @@
+<h1>注册成功</h1>
+<p>${nickname}你好！恭喜你已经成功注册为 <a href="${domain}" target="_blank">${siteName}</a> 的一员，下面还只剩一步就可以完成所用操作了。<p>
+<p>请将该注册难码 <strong>${code}</strong> 提交到 <a href="${domain}page/regist-check.html" target="_blank">注册验证页</a></p>
+<p>或者直接点击该链接完成验证 <a href="${domain}page/regist-check.html?username=${username}&code=${code}"
+	target="_blank">${domain}page/regist-check.html?username=${username}&code=${code}</a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>该邮件来自 ${siteName}</p>

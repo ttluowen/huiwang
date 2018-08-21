@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<!-- 命名空间。 -->
+	<namespace>base.siteHost</namespace>
+
+
+	<sql id="getAll"><![CDATA[
+		SELECT * FROM base_siteHost;
+	]]></sql>
+	
+	
+	<sql id="create"><![CDATA[
+		INSERT INTO base_siteHost(
+			siteId, ip, port, datetime
+		)
+		VALUES (
+			'$siteId', '$ip', $port, '$datetime'
+		);
+	]]></sql>
+	
+	
+	<sql id="modify"><![CDATA[
+		UPDATE base_siteHost
+		   SET ip = '$ip',
+		   	   port = $port,
+		   	   datetime = '$datetime'
+		 WHERE siteId = '$siteId'
+		;
+	]]></sql>
+	
+	
+	<sql id="delete"><![CDATA[
+		DELETE FROM base_siteHost WHERE siteId = '$siteId';
+	]]></sql>
+</root>

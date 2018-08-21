@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<!-- 命名空间。 -->
+	<namespace>dbConfig</namespace>
+
+
+	<sql id="getAll"><![CDATA[
+		SELECT *
+		  FROM base_config
+		 WHERE siteId = '$siteId'
+			OR ISNULL(siteId)
+			OR siteId = ''
+		;
+	]]></sql>
+	
+	<sql id="create"><![CDATA[
+		INSERT INTO base_config (
+			id, siteId, siteName, `key`, value,
+			defaultValue, description
+		)
+		VALUES (
+			NULL, '$siteId', '$siteName', '$key', '$value',
+			'$defaultValue', '$description'
+		);
+	]]></sql>
+	
+	<sql id="modify"><![CDATA[
+		UPDATE base_config
+		   SET siteId = '$siteId',
+		   	   siteName = '$siteName',
+		   	   `key` = '$key',
+		   	   value = '$value',
+		   	   defaultValue = '$defaultValue',
+		   	   description = '$description'
+		 WHERE id = $id
+		;
+	]]></sql>
+	
+	<sql id="delete"><![CDATA[
+		DELETE
+		  FROM base_config
+		 WHERE id = $id
+		;
+	]]></sql>
+</root>
