@@ -62,7 +62,7 @@ public class FrontStorage extends Responsor {
 	@ApiAction
 	public StatuscodeMap get() {
 
-		return dbSelectOneDataMap(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "get", getParams());
+		return dbSelectOneDataMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "get", getParams());
 	}
 	
 	
@@ -79,9 +79,9 @@ public class FrontStorage extends Responsor {
 
 		
 		MapValue params = getParams();
-		int dbResult = dbUpdate(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "update", params);
+		int dbResult = dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "update", params);
 		if (dbResult == 0) {
-			dbResult = dbUpdate(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "add", params);
+			dbResult = dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "add", params);
 		}
 		
 		
@@ -104,7 +104,7 @@ public class FrontStorage extends Responsor {
 
 		StatuscodeMap sm = new StatuscodeMap();
 		
-		if (dbUpdate(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "remove", getParams()) > 0) {
+		if (dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "remove", getParams()) > 0) {
 			sm.setCode(Statuscode.SUCCESS);
 		}
 		

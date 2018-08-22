@@ -64,7 +64,7 @@ public class DBConfig extends Responsor {
 		sqlParams.put("siteId", SystemConfig.getId());
 		
 		
-		return dbSelectMap(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "getAll", sqlParams, null, DBConfigStruct.class);
+		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "getAll", sqlParams, null, DBConfigStruct.class);
 	}
 
 	
@@ -140,7 +140,7 @@ public class DBConfig extends Responsor {
 	@ApiAction(admin = true)
 	public StatuscodeMap create() {
 		
-		StatuscodeMap sm = dbUpdateMap(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "create", getPostParams());
+		StatuscodeMap sm = dbUpdateMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "create", getPostParams());
 		
 		if (sm.getCode() == Statuscode.SUCCESS) {
 			// 清空缓存，下次重新取。
@@ -160,7 +160,7 @@ public class DBConfig extends Responsor {
 	@ApiAction(admin = true)
 	public StatuscodeMap modify() {
 
-		StatuscodeMap sm = dbUpdateMap(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "modify", getPostParams());
+		StatuscodeMap sm = dbUpdateMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "modify", getPostParams());
 		
 		if (sm.getCode() == Statuscode.SUCCESS) {
 			// 清空缓存，下次重新取。
@@ -180,7 +180,7 @@ public class DBConfig extends Responsor {
 	@ApiAction(admin = true)
 	public StatuscodeMap delete() {
 
-		StatuscodeMap sm = dbUpdateMap(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "delete", getPostParams());
+		StatuscodeMap sm = dbUpdateMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "delete", getPostParams());
 		
 		if (sm.getCode() == Statuscode.SUCCESS) {
 			// 清空缓存，下次重新取。

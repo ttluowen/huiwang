@@ -65,7 +65,7 @@ public class ExecuteRecorder extends ExecuteRecorderInterface {
 			Database.printSql = false;
 
 			String sql = DatabaseSql.renderTemplate(getSqlTemplate(), sqlParams);
-			Database db = new Database(getFactoryKey(), Dim.DB_SOURCE_YIYUEN);
+			Database db = new Database(getFactoryKey(), Dim.DB_SOURCE_MYSQL);
 			db.update(sql);
 		} catch (Exception e) {
 			Logger.printStackTrace(e);

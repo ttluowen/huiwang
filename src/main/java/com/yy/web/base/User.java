@@ -138,7 +138,7 @@ public class User extends Responsor {
 		Database.printSql = false;
 		
 		// 执行 SQL 语句。
-		UserNormalStruct dbUser = dbSelectOne(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "login", sqlParams, null, UserNormalStruct.class);
+		UserNormalStruct dbUser = dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "login", sqlParams, null, UserNormalStruct.class);
 		
 		// 登录脚本执行完后再开户 SQL 打印。
 		Database.printSql = true;
@@ -275,7 +275,7 @@ public class User extends Responsor {
 		sqlParams.put("quickLoginCode", code);
 		sqlParams.put("userAgent", userAgent);
 
-		UserQuickLoginDataStruct result = dbSelectOne(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "quickLogin", sqlParams, null, UserQuickLoginDataStruct.class);
+		UserQuickLoginDataStruct result = dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "quickLogin", sqlParams, null, UserQuickLoginDataStruct.class);
 		if (result == null) {
 			sm.setDescription("登录码不存在");
 		} else {
@@ -295,7 +295,7 @@ public class User extends Responsor {
 						sqlParams.clear();
 						sqlParams.put("id", result.getId());
 						sqlParams.put("userId", result.getUserId());
-						dbUpdate(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "updateQuickLoginTimes", sqlParams);
+						dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "updateQuickLoginTimes", sqlParams);
 					}
 				} else {
 					sm.setDescription("用户不存在");
@@ -414,7 +414,7 @@ public class User extends Responsor {
 		sqlParams.put("datetime", DateUtil.format(data.getDatetime(), 1));
 		sqlParams.put("expireDatetime", DateUtil.format(data.getExpireDatetime(), 1));
 		
-		int dbResult = dbUpdate(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "generateQuickLoginCode", sqlParams);
+		int dbResult = dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "generateQuickLoginCode", sqlParams);
 		if (dbResult == 0) {
 			// 失败的。
 			quickLoginCode = null;
@@ -468,7 +468,7 @@ public class User extends Responsor {
 		sqlParams.put("userAgent", userAgent);
 		
 		
-		return dbUpdate(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "clearQuickLoginCode", sqlParams);
+		return dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "clearQuickLoginCode", sqlParams);
 	}
 
 
@@ -595,7 +595,7 @@ public class User extends Responsor {
 	 */
 	public <T> T getProfile(MapValue params, Class<T> clazz) {
 
-		return dbSelectOne(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "getProfile", params, null, clazz);
+		return dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "getProfile", params, null, clazz);
 	}
 
 
@@ -648,7 +648,7 @@ public class User extends Responsor {
 		sqlParams.put("username", username);
 		sqlParams.put("email", email);
 		
-		List<MapValue> checkResult = dbSelect(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "registCheck", sqlParams);
+		List<MapValue> checkResult = dbSelect(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "registCheck", sqlParams);
 		if (checkResult.size() > 0) {
 			sm.setDescription("用户名或邮箱已存在");
 			return sm;
@@ -659,7 +659,7 @@ public class User extends Responsor {
 		sqlParams.put("nickname", nickname);
 		sqlParams.put("password", MD5.encode(password));
 		sqlParams.put("status", UserStatus.UN_CHECKED);
-		int registResult = dbUpdate(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "regist", sqlParams);
+		int registResult = dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "regist", sqlParams);
 
 		if (registResult != 0) {
 			// 直接设置为登录状态。
@@ -723,7 +723,7 @@ public class User extends Responsor {
 		sqlParams.put("status", status);
 		
 		
-		return dbUpdate(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "modifyUserStatus", sqlParams);
+		return dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "modifyUserStatus", sqlParams);
 	}
 	
 	
@@ -754,7 +754,7 @@ public class User extends Responsor {
 		sqlParams.put("expireDatetime", DateUtil.format(expireCalendar, 1));
 		
 		// 新增。
-		int codeResult = dbUpdate(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "insertRegistCode", sqlParams);
+		int codeResult = dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "insertRegistCode", sqlParams);
 		if (codeResult < 1) {
 			return null;
 		}
@@ -764,7 +764,7 @@ public class User extends Responsor {
 		 * 后面的发送邮件相关。
 		 */
 		String email = profile.getEmail();
-		String domain = StringUtil.appendEndsWith(SystemConfig.getConfig("domain", Dim.DEFAULT_DOMAIN), "/");
+		String domain = StringUtil.appendEndsWith(SystemConfig.getConfig("domain", DBConfig.getValue("domain")), "/");
 		String siteName = SystemConfig.getName();
 		int userId = profile.getUserId();
 
@@ -811,7 +811,7 @@ public class User extends Responsor {
 		sqlParams.put("username", username);
 		
 		
-		return dbUpdate(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "deleteRegistCode", sqlParams);
+		return dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "deleteRegistCode", sqlParams);
 	}
 	
 	
@@ -841,7 +841,7 @@ public class User extends Responsor {
 		sqlParams.put("code", code);
 
 
-		MapValue result = dbSelectOne(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "checkRegistCode", sqlParams);
+		MapValue result = dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "checkRegistCode", sqlParams);
 		if (!result.isEmpty()) {
 			Date expireDatetime = DateUtil.parseDate(StringUtil.unNull(result.get("expireDatetime")));
 			if (expireDatetime != null) {
@@ -918,7 +918,7 @@ public class User extends Responsor {
 		
 		
 		// 真正尝试更新用户表，如果用户名、邮箱正确的话。
-		int updateResult = dbUpdate(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "setNewPassword", sqlParams);
+		int updateResult = dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "setNewPassword", sqlParams);
 		if (updateResult == 0) {
 			sm.setDescription("重置密码失败，用户名或邮箱不正确");
 			return sm;
@@ -932,9 +932,9 @@ public class User extends Responsor {
 		sqlParams.put("expireDatetime", DateUtil.format(expireCalendar, 1));
 
 		// 先清理可能存在的记录。
-		dbUpdate(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "deleteRevertCode", sqlParams);
+		dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "deleteRevertCode", sqlParams);
 		// 新增。
-		int revertResult = dbUpdate(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "insertRevertCode", sqlParams);
+		int revertResult = dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "insertRevertCode", sqlParams);
 		if (revertResult > 0) {
 			if (sendRevertMail(username, email, newPassword) == Statuscode.SUCCESS) {
 				sm.setCode(Statuscode.SUCCESS);
@@ -995,7 +995,7 @@ public class User extends Responsor {
 		sqlParams.put("original", md5Original);
 		sqlParams.put("password", md5Password);
 		
-		int dbResult = dbUpdate(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "modifyPassword", sqlParams);
+		int dbResult = dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "modifyPassword", sqlParams);
 		if (dbResult > 0) {
 			sm.setCode(Statuscode.SUCCESS);
 			sm.setDescription(Statuscode.SUCCESS_DESC);
@@ -1016,7 +1016,7 @@ public class User extends Responsor {
 	 */
 	private int sendRevertMail(String nickname, String email, String password) {
 		
-		String domain = StringUtil.appendEndsWith(SystemConfig.getConfig("domain", Dim.DEFAULT_DOMAIN), "/");
+		String domain = StringUtil.appendEndsWith(SystemConfig.getConfig("domain", DBConfig.getValue("domain")), "/");
 		String siteName = SystemConfig.getName();
 		
 		

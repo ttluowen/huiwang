@@ -86,7 +86,7 @@ public class DbLogCleaner {
 		Responsor responsor = new Responsor(null, null);
 		responsor.setAppId(SystemConfig.getAppId());
 		responsor.setFactoryKey(SystemConfig.getDefaultFactory());
-		int count = responsor.dbUpdate(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "clean", sqlParams);
+		int count = responsor.dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "clean", sqlParams);
 
 
 		// 计算耗时。

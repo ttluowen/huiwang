@@ -45,7 +45,7 @@ public class Version extends Responsor {
 	@ApiAction
 	public StatuscodeTypeMap<VersionStruct> query() {
 		
-		return dbSelectOneMap(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "query", null, null, VersionStruct.class);
+		return dbSelectOneMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "query", null, null, VersionStruct.class);
 	}
 	
 	
@@ -249,7 +249,7 @@ public class Version extends Responsor {
 		sqlParams.put("datetime", DateUtil.get(1));
 
 		
-		return dbUpdate(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "update", sqlParams) > 0;
+		return dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "update", sqlParams) > 0;
 	}
 	
 	
@@ -287,6 +287,6 @@ public class Version extends Responsor {
 		sqlParams.put("datetime", DateUtil.get(1));
 
 
-		return dbUpdateMap(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "updateSiteVersion", sqlParams);
+		return dbUpdateMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "updateSiteVersion", sqlParams);
 	}
 }

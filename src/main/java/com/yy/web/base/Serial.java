@@ -87,7 +87,7 @@ public class Serial extends Responsor {
 				MapValue sqlParams = new MapValue();
 				sqlParams.put("siteId", siteId);
 				sqlParams.put("appId", appId);
-				MapValue result = dbSelectOne(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "exists", sqlParams);
+				MapValue result = dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "exists", sqlParams);
 				
 				if (result.isEmpty()) {
 					JSONObject jsonData = json.getJSONObject("data");
@@ -151,7 +151,7 @@ public class Serial extends Responsor {
 		sqlParams.put("appId", appId);
 		sqlParams.put("secret", generateSecret());
 		
-		int db = dbUpdate(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "regenerateSecret", sqlParams);
+		int db = dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "regenerateSecret", sqlParams);
 		if (db > 0) {
 			sm.setCode(Statuscode.SUCCESS);
 		}
@@ -178,7 +178,7 @@ public class Serial extends Responsor {
 		MapValue map = new MapValue();
 		map.put("siteId", siteId);
 		map.put("appId", appId);
-		String data = StringUtil.unNull(dbSelectOne(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "", map).get("data"));
+		String data = StringUtil.unNull(dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "", map).get("data"));
 
 		String serialKey = generateSerialKey();
 		String serialCode = generateSerialCode(appId, serialKey, data);
@@ -190,7 +190,7 @@ public class Serial extends Responsor {
 		sqlParams.put("serialKey", serialKey);
 		sqlParams.put("serialCode", serialCode);
 
-		int db = dbUpdate(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "regenerateSerial", sqlParams);
+		int db = dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "regenerateSerial", sqlParams);
 		if (db > 0) {
 			sm.setCode(Statuscode.SUCCESS);
 		}
@@ -224,7 +224,7 @@ public class Serial extends Responsor {
 		sqlParams.put("data", data);
 
 
-		return dbUpdate(Dim.DB_SOURCE_YIYUEN, SQL_NAMESPACE + "create", sqlParams) > 0;
+		return dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "create", sqlParams) > 0;
 	}
 	
 	
