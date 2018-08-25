@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<!-- 命名空间。 -->
+	<namespace>school</namespace>
+
+
+	<sql id="create"><![CDATA[
+		INSERT INTO `school` (
+			schoolId, name, historyNames, type, province,
+			area, cityId, banner, description, creator,
+			datetime, status
+		)
+		VALUES (
+			NULL, '$name', '$historyNames', '$type', '$province',
+			'$area', $cityId, '$banner', '$description', $creator,
+			'$datetime', $status
+		);
+	]]></sql>
+
+
+	<sql id="modify"><![CDATA[
+		UPDATE `school`
+		   SET name = '$name',
+		       historyNames = '$historyNames',
+		       province = '$province',
+		       area = '$area',
+		       cityId = $cityId,
+		       banner = '$banner',
+		       description = '$description'
+		 WHERE schoolId = $schoolId
+		   AND creator = $creator
+		;
+	]]></sql>
+
+
+	<sql id="rename"><![CDATA[
+		UPDATE `school`
+		   SET name = '$name',
+		 WHERE schoolId = $schoolId
+		   AND creator = $creator
+		;
+	]]></sql>
+</root>

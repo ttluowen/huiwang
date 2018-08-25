@@ -15,15 +15,15 @@ import com.yy.web.request.annotation.ApiAction;
 import com.yy.web.site.huiwang.struct.ClassStruct;
 
 /**
- * 班级管理类。
+ * 学校管理类。
  * 
- * @since 2018-08-22
+ * @since 2018-08-24
  * @version 1.0
  * @author Luowen
  */
-public class Clazz extends Responsor {
+public class School extends Responsor {
 	
-	public static final String SQL_NAMESPACE = "class.";
+	public static final String SQL_NAMESPACE = "school.";
 	
 
 	/**
@@ -32,7 +32,7 @@ public class Clazz extends Responsor {
 	 * @param request
 	 * @param response
 	 */
-	public Clazz(HttpServletRequest request, HttpServletResponse response) {
+	public School(HttpServletRequest request, HttpServletResponse response) {
 		
 		super(request, response);
 	}
@@ -50,16 +50,16 @@ public class Clazz extends Responsor {
 	
 	
 	/**
-	 * 获取当前用户加入的班级。
+	 * 获取当前用户加入的学校。
 	 * 
 	 * @return
 	 */
-	public StatuscodeTypeMap<List<ClassStruct>> getUserClass() {
+	public StatuscodeTypeMap<List<ClassStruct>> getUserSchool() {
 		
 		MapValue sqlParams = new MapValue();
 		sqlParams.put("userId", getUserId());
 		
-		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "getUserClass", sqlParams, null, ClassStruct.class);
+		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "getUserSchool", sqlParams, null, ClassStruct.class);
 	}
 	
 	
@@ -67,18 +67,22 @@ public class Clazz extends Responsor {
 		
 		MapValue data = getPostParams();
 		String name = data.getString("name");
-		int schoolId = data.getIntValue("schoolId");
-		String year = data.getString("year");
-		String field = data.getString("field");
+		String historyNames = data.getString("historyNames");
+		String type = data.getString("type");
+		String province = data.getString("province");
+		String area = data.getString("area");
+		int cityId = data.getIntValue("cityId");
 		String banner = data.getString("banner");
 		int creator = getUserId();
 		int status = data.getIntValue("status");
 		
 		
 		data.put("name", name);
-		data.put("schoolId", schoolId);
-		data.put("year", year);
-		data.put("field", field);
+		data.put("historyNames", historyNames);
+		data.put("type", type);
+		data.put("province", province);
+		data.put("area", area);
+		data.put("cityId", cityId);
 		data.put("banner", banner);
 		data.put("creator", creator);
 		data.put("status", status);
@@ -89,7 +93,7 @@ public class Clazz extends Responsor {
 
 	
 	/**
-	 * 创建班级。
+	 * 创建学校。
 	 * 
 	 * @return
 	 */
@@ -98,14 +102,14 @@ public class Clazz extends Responsor {
 
 		MapValue data = getCreateModifyData();
 		data.put("datetime", DateUtil.get(1));
-		
-		
+
+
 		return dbInsertAndReturnIdMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "create", data);
 	}
-	
+
 
 	/**
-	 * 修改班级信息。
+	 * 修改学校信息。
 	 * 
 	 * @return
 	 */
@@ -119,7 +123,7 @@ public class Clazz extends Responsor {
 	
 
 	/**
-	 * 重命名班级。
+	 * 重命名学校。
 	 * 
 	 * @return
 	 */
@@ -129,34 +133,5 @@ public class Clazz extends Responsor {
 		MapValue data = getCreateModifyData();
 
 		return dbUpdateMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "rename", data);
-	}
-	
-
-	/**
-	 * 加入班级。
-	 * 
-	 * @return
-	 */
-	@ApiAction(login = true)
-	public StatuscodeMap join() {
-
-		int classId = getIntParam("classId");
-		int userId = getUserId();
-		
-		MapValue data = new MapValue();
-		data.put("classId", classId);
-		data.put("userId", userId);
-		
-		
-		MapValue joined = dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "queryUserJoined", data);
-		if (joined != null) {
-			StatuscodeMap sm = new StatuscodeMap();
-			sm.setDescription("已经加入过了");
-			
-			return sm;
-		}
-
-		
-		return dbUpdateMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "join", data);
 	}
 }

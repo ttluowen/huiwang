@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<!-- 命名空间。 -->
+	<namespace>class</namespace>
+
+
+	<sql id="create"><![CDATA[
+		INSERT INTO `class` (
+			classId, name, schoolId, year, field,
+			banner, creator, joined, datetime, status
+		)
+		VALUES (
+			NULL, '$name', $schoolId, '$year', '$field',
+			'$banner', $creator, 0, '$datetime', $status
+		);
+	]]></sql>
+	
+	
+	<sql id="modify"><![CDATA[
+		UPDATE `class`
+		   SET name = '$name',
+		       year = '$year',
+		       field = '$field',
+		       banner = '$banner',
+		 WHERE classId = $classId
+		   AND schoolId = $schoolId
+		   AND creator = $creator
+		;
+	]]></sql>
+	
+	
+	<sql id="rename"><![CDATA[
+		UPDATE `class`
+		   SET name = '$name',
+		 WHERE classId = $classId
+		   AND schoolId = $schoolId
+		   AND creator = $creator
+		;
+	]]></sql>
+	
+	
+	<sql id="queryUserJoined"><![CDATA[
+		SELECT 1
+		  FROM class_user
+		 WHERE userId = $userId
+		#if ($classId != 0)
+		   AND classId = $classId
+		#end
+		;
+	]]></sql>
+	
+	<sql id="join"><![CDATA[
+		INSERT INTO `class_user` (
+			id, classId, userId, datetime
+		)
+		VALUES (
+			NULL, $classId, $userId, '$datetime'
+		);
+	]]></sql>
+</root>
