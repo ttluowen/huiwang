@@ -1,18 +1,25 @@
 package com.yy.web.site.huiwang;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.yy.statuscode.Statuscode;
 import com.yy.statuscode.StatuscodeMap;
 import com.yy.statuscode.StatuscodeTypeMap;
+import com.yy.util.array.ArrayUtil;
 import com.yy.util.date.DateUtil;
 import com.yy.util.map.MapValue;
 import com.yy.web.Dim;
 import com.yy.web.Responsor;
 import com.yy.web.request.annotation.ApiAction;
 import com.yy.web.site.huiwang.struct.ClassStruct;
+import com.yy.web.site.huiwang.struct.SchoolStruct;
 
 /**
  * 学校管理类。
@@ -54,12 +61,42 @@ public class SchoolApi extends Responsor {
 	 * 
 	 * @return
 	 */
-	public StatuscodeTypeMap<List<ClassStruct>> getUserSchool() {
+	public StatuscodeTypeMap<List<SchoolStruct>> my() {
 		
-		MapValue sqlParams = new MapValue();
-		sqlParams.put("userId", getUserId());
-		
-		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "getUserSchool", sqlParams, null, ClassStruct.class);
+		ClassApi clazz = new ClassApi(getRequest(), getResponse());
+		copyTo(clazz);
+
+		StatuscodeTypeMap<List<ClassStruct>> clazzSm = clazz.my();
+		if (clazzSm.getCode() == Statuscode.SUCCESS) {
+			// 查询用户加入的班级。
+			List<ClassStruct> clazzList = clazzSm.getResult();
+			Map<Integer, Boolean> clazzMap = new HashMap<>();
+			
+			for (ClassStruct item : clazzList) {
+				clazzMap.put(item.getSchoolId(), true);
+			}
+			
+			Iterator<Integer> keys = clazzMap.keySet().iterator();
+			List<Integer> clazzIds = new ArrayList<>();
+			while (keys.hasNext()) {
+				clazzIds.add(keys.next());
+			}
+
+			String clazzIdsStr = ArrayUtil.join(ArrayUtil.toInt(clazzIds.toArray(new Integer[0])));
+			
+			
+			MapValue sqlParams = new MapValue();
+			sqlParams.put("userId", getUserId());
+			sqlParams.put("classIds", clazzIdsStr);
+			
+			return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "my", sqlParams, null, SchoolStruct.class);
+		} else {
+			StatuscodeTypeMap<List<SchoolStruct>> sm = new StatuscodeTypeMap<>();
+			sm.setCode(Statuscode.SUCCESS);
+			sm.setDescription("没有任何记录");
+
+			return sm;
+		}
 	}
 	
 	

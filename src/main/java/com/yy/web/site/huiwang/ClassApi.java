@@ -50,16 +50,33 @@ public class ClassApi extends Responsor {
 	
 	
 	/**
+	 * 获取已加入班级的人员列表。
+	 * 
+	 * @return
+	 */
+	@ApiAction
+	public StatuscodeMap getClassUsers() {
+
+		int classId = getIntParam("classId");
+		MapValue sqlParams = new MapValue();
+		sqlParams.put("classId", classId);
+		
+		
+		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "getClassUsers", sqlParams);
+	}
+	
+	
+	/**
 	 * 获取当前用户加入的班级。
 	 * 
 	 * @return
 	 */
-	public StatuscodeTypeMap<List<ClassStruct>> getUserClass() {
+	public StatuscodeTypeMap<List<ClassStruct>> my() {
 		
 		MapValue sqlParams = new MapValue();
 		sqlParams.put("userId", getUserId());
 		
-		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "getUserClass", sqlParams, null, ClassStruct.class);
+		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "my", sqlParams, null, ClassStruct.class);
 	}
 	
 	

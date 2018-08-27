@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<!-- 命名空间。 -->
+	<namespace>city</namespace>
+
+
+	<sql id="list"><![CDATA[
+		SELECT *
+		  FROM base_city
+		 WHERE 1 = 1
+		#if ($level && $level != 0)
+		   AND level = $level
+		#end
+		#if ($province && $province != '')
+		   AND province = '$province';
+		#end
+	]]></sql>
+</root>

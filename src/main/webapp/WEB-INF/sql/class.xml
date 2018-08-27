@@ -4,6 +4,32 @@
 	<namespace>class</namespace>
 
 
+	<sql id="list"><![CDATA[
+		SELECT c.*,
+			   s.*
+		  FROM `class` AS c
+		  LEFT JOIN `school` AS s
+		    ON c.schoolId = s.schoolId
+		 WHERE 1 = 1
+		#if ($classId && $classId != 0)
+		   AND classId = $classId
+		#end
+		#if ($classIds && $classIds != '')
+		   AND classIds IN ($classIds)
+		#end
+		#if ($schoolId && $schoolId != 0)
+		   AND schoolId = $schoolId
+		#end
+		#if ($schoolIds && $schoolIds != '')
+		   AND schoolId IN ($schoolIds)
+		#end
+		#if ($name && $name != '')
+		   AND name LIKE '%${name}%'
+		#end
+		;
+	]]></sql>
+	
+	
 	<sql id="create"><![CDATA[
 		INSERT INTO `class` (
 			classId, name, schoolId, year, field,
@@ -35,6 +61,18 @@
 		 WHERE classId = $classId
 		   AND schoolId = $schoolId
 		   AND creator = $creator
+		;
+	]]></sql>
+	
+	
+	<sql id="getClassUsers"><![CDATA[
+		SELECT userId, nickname, avatar, gender
+		  FROM base_user
+		 WHERE userId IN (
+		 			SELECT userId
+		 			  FROM class_user
+		 			 WHERE classId = $classId
+				)
 		;
 	]]></sql>
 	

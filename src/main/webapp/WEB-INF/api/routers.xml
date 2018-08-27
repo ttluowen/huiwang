@@ -32,61 +32,9 @@
 	</path>
 
 
-	<!-- 收藏夹。 -->
-	<path name="fav">
-		<path name="fav" class="com.yy.web.site.fav.Fav" />
-		<path name="category" class="com.yy.web.site.fav.Category" />
-		<path name="screensHot" class="com.yy.web.site.fav.ScreensHot" />
-		
-		<path name="sys" class="com.yy.web.site.fav.Sys" />
-	</path>
-
-
-	<!-- 百图网。 -->
-	<path name="tu" class="com.yy.web.site.tu.Tu">
-		<path name="manage" class="com.yy.web.site.tu.Manage" />
-		<path name="catchTest" class="com.yy.web.site.tu.CatchTest" />
-	</path>
-	
-	
-	<!-- 建站建设。 -->
-	<path name="xiaozhan">
-		<path name="manage" class="com.yy.web.site.xiaozhan.Manage" />
-	</path>
-	
-	
-	<!-- 服务器监控。 -->
-	<path name="serverMonitor" class="com.yy.web.site.servermonitor.ServerMonitor" />
-	
-	
-	<!-- IP 上报。 -->
-	<path name="host" class="com.yy.web.site.host.HostApi" />
-	
-	
-	<!-- 访问日志。 -->
-	<path name="visitRecord">
-		<path name="bi" class="com.yy.web.site.visitrecord.VisitRecordBIApi" />
-	</path>
-	
-	
-	<!-- 文件分享站。 -->
-	<path name="file" class="com.yy.web.site.file.FileApi">
-		<path name="manage" class="com.yy.web.site.file.FileManageApi" />
-	</path>
-	
-	
-	<!-- 房。 -->
-	<path name="fang">
-		<path name="city" class="com.yy.web.site.fang.CityApi" />
-		<path name="area" class="com.yy.web.site.fang.AreaApi" />
-		<path name="community" class="com.yy.web.site.fang.CommunityApi" />
-		<path name="house" class="com.yy.web.site.fang.HouseApi" />
-		<path name="transaction" class="com.yy.web.site.fang.TransactionApi" />
-		
-		<path name="intermediary" class="com.yy.web.site.fang.IntermediaryApi" />
-		<path name="intermediaryCity" class="com.yy.web.site.fang.IntermediaryCityApi" />
-		
-		<path name="manage" class="com.yy.web.site.fang.ManageApi" />
-	</path>
+	<path name="city" class="com.yy.web.site.huiwang.CityApi" />
+	<path name="class" class="com.yy.web.site.huiwang.ClassApi" />
+	<path name="school" class="com.yy.web.site.huiwang.SchoolApi" />
+	<path name="total" class="com.yy.web.site.huiwang.TotalApi" />
 </root>
 
