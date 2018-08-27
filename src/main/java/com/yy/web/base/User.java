@@ -1,5 +1,6 @@
 package com.yy.web.base;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.yy.database.Database;
 import com.yy.encrypt.BASE64Q;
 import com.yy.encrypt.MD5;
@@ -16,6 +18,7 @@ import com.yy.statuscode.Statuscode;
 import com.yy.statuscode.StatuscodeMap;
 import com.yy.util.date.DateUtil;
 import com.yy.util.file.FileUtil;
+import com.yy.util.http.HttpUtil;
 import com.yy.util.mail.MailSenderFactory;
 import com.yy.util.map.MapValue;
 import com.yy.util.number.NumberUtil;
@@ -301,6 +304,79 @@ public class User extends Responsor {
 					sm.setDescription("用户不存在");
 				}
 			}
+		}
+		
+		
+		return sm;
+	}
+	
+	
+	/**
+	 * 使用微信登录码登录。
+	 * 
+	 * @return
+	 */
+	public StatuscodeMap loginByWechatCode() {
+		
+		StatuscodeMap sm = new StatuscodeMap();
+		
+		try {
+			MapValue postData = getPostParams();
+			String code = postData.getString("code");
+			String nickname = postData.getString("nickname");
+			int gender = postData.getIntValue("gender");
+			String avatar = postData.getString("avatar");
+			
+			MapValue params = new MapValue();
+			params.put("appId", DBConfig.get("wechat.minapp.appId"));
+			params.put("secret", "wechat.minapp.secret");
+			params.put("code", code);
+
+			String url = "https://api.weixin.qq.com/sns/jscode2session?appid={appId}&secret={secret}&js_code={code}&grant_type=authorization_code";
+			url = StringUtil.substitute(url, params);
+
+			String content = HttpUtil.get(url);
+			JSONObject result = JSON.parseObject(content);
+			
+			if (result.getIntValue("errcode") != 0) {
+				sm.setDescription(result.getString("errmsg"));
+			}
+
+
+			VisitProp visit = Visit.get(getAndUpdateToken());
+			if (visit != null) {
+				String openid = result.getString("openid");
+				String sessionKey = result.getString("session_key");
+				
+				MapValue visitData = visit.getData();
+				visitData.put("openid", openid);
+				visitData.put("sessionKey", sessionKey);
+				
+				
+				if (!wechatOpenidExists(openid)) {
+					params = new MapValue();
+					params.put("nickname", nickname);
+					params.put("gender", gender);
+					params.put("avatar", avatar);
+					
+					int userId = registFromWechat(params);
+					if (userId != 0) {
+						UserNormalStruct profile = getProfile(userId);
+						if (profile != null) {
+							loginDo(userId, profile.getUsername(), profile.getNickname(), SystemConfig.getAppId(), null, getAndUpdateToken());
+
+							sm.setCode(Statuscode.SUCCESS);
+						} else {
+							sm.setDescription("获取用户信息失败");
+						}
+					} else {
+						sm.setDescription("注释来自微信的账号失败");
+					}
+				}
+			}
+		} catch (IOException e) {
+			Logger.printStackTrace(e);
+			sm.setResult(e.getMessage());
 		}
 		
 		
@@ -597,8 +673,23 @@ public class User extends Responsor {
 
 		return dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "getProfile", params, null, clazz);
 	}
+	
+	
+	/**
+	 * 判断微信 openid 账号是否存在。
+	 * 
+	 * @param wechatOpenid
+	 * @return
+	 */
+	public boolean wechatOpenidExists(String wechatOpenid) {
 
-
+		MapValue params = new MapValue();
+		params.put("wechatOpenid", wechatOpenid);
+		
+		return !dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "getProfile", params).isEmpty();
+	}
+	
+	
 	/**
 	 * 用户注册。
 	 * 
@@ -682,6 +773,28 @@ public class User extends Responsor {
 	
 
 	/**
+	 * 来自微信的注册。
+	 * 
+	 * @return
+	 */
+	public int registFromWechat(MapValue data) {
+		
+		String username = generateWechatUsername();
+		String nickname = data.getString("nickName");
+		int gender = data.getIntValue("gender");
+		String avatar = data.getString("avatarUrl");
+		
+		data.put("username", username);
+		data.put("nickname", nickname);
+		data.put("gender", gender);
+		data.put("avatar", avatar);
+		
+		
+		return dbInsertAndReturnId(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "regist", data);
+	}
+
+
+	/**
 	 * 重新发送注册码邮件。
 	 * 
 	 * @return
@@ -706,6 +819,12 @@ public class User extends Responsor {
 		
 		
 		return sm;
+	}
+	
+	
+	public String generateWechatUsername() {
+		
+		return "wx" + StringUtil.gid16();
 	}
 	
 	

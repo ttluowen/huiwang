@@ -2,6 +2,7 @@ package com.yy.web.base.visit;
 
 import java.util.Locale;
 
+import com.yy.util.map.MapValue;
 import com.yy.util.string.StringUtil;
 
 public class VisitProp {
@@ -36,6 +37,9 @@ public class VisitProp {
 	private String ip;
 	/** 浏览器信息。 */
 	private String userAgent;
+	
+	/** 额外数据。 */
+	private MapValue data;
 
 
 	public VisitProp() {
@@ -153,5 +157,13 @@ public class VisitProp {
 
 	public void setUserAgent(String userAgent) {
 		this.userAgent = userAgent;
+	}
+
+	public MapValue getData() {
+		return data;
+	}
+
+	public void setData(MapValue data) {
+		this.data = data;
 	}
 }

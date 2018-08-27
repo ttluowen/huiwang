@@ -21,7 +21,7 @@ import com.yy.web.site.huiwang.struct.ClassStruct;
  * @version 1.0
  * @author Luowen
  */
-public class School extends Responsor {
+public class SchoolApi extends Responsor {
 	
 	public static final String SQL_NAMESPACE = "school.";
 	
@@ -32,7 +32,7 @@ public class School extends Responsor {
 	 * @param request
 	 * @param response
 	 */
-	public School(HttpServletRequest request, HttpServletResponse response) {
+	public SchoolApi(HttpServletRequest request, HttpServletResponse response) {
 		
 		super(request, response);
 	}
@@ -133,5 +133,14 @@ public class School extends Responsor {
 		MapValue data = getCreateModifyData();
 
 		return dbUpdateMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "rename", data);
+	}
+	
+	
+	public StatuscodeMap list() {
+		
+		MapValue sqlParams = new MapValue();
+		sqlParams.put("cityId", getIntParam("cityId"));
+		
+		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", sqlParams);
 	}
 }

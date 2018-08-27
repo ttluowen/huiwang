@@ -21,7 +21,7 @@ import com.yy.web.site.huiwang.struct.ClassStruct;
  * @version 1.0
  * @author Luowen
  */
-public class Clazz extends Responsor {
+public class ClassApi extends Responsor {
 	
 	public static final String SQL_NAMESPACE = "class.";
 	
@@ -32,7 +32,7 @@ public class Clazz extends Responsor {
 	 * @param request
 	 * @param response
 	 */
-	public Clazz(HttpServletRequest request, HttpServletResponse response) {
+	public ClassApi(HttpServletRequest request, HttpServletResponse response) {
 		
 		super(request, response);
 	}
