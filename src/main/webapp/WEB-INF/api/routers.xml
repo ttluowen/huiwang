@@ -29,6 +29,7 @@
 		<path name="util" class="com.yy.web.base.Util" />
 		<path name="frontStorage" class="com.yy.web.base.FrontStorage" />
 		<path name="dbConfig" class="com.yy.web.base.DBConfig" />
+		<path name="visit" class="com.yy.web.base.visit.Visit" />
 	</path>
 
 

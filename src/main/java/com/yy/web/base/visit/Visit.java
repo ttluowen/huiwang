@@ -98,6 +98,9 @@ public class Visit extends Responsor {
 
 		// 获取来访应用。
 		String appId = getStringParam("appId");
+		if (StringUtil.isEmpty(appId)) {
+			appId = SystemConfig.getAppId();
+		}
 		String[] appIds = {appId};
 		
 		// 获取客户端信息。

@@ -1,0 +1,73 @@
+/**
+ * 登录注册页面样式。
+ * 
+ * @since 2018-01-21
+ * @version 1.0
+ * @author Luowen
+ */
+.regist-common-page .box-body {
+  text-align: center;
+  padding: 120px 15px;
+}
+.regist-common-page .box-body .body-title {
+  font-weight: normal;
+  margin-bottom: 40px;
+}
+.regist-common-page .box-body .sendMail-icon,
+.regist-common-page .box-body .sendMail-text {
+  display: inline-block;
+  vertical-align: middle;
+}
+.regist-common-page .box-body .sendMail-icon {
+  margin-right: 20px;
+}
+.regist-common-page .box-body .sendMail-text {
+  text-align: left;
+}
+.regist-common-page .box-body .sendMail-text p {
+  margin: 5px 0;
+}
+.regist-common-page .form-group {
+  text-align: left;
+  margin-bottom: 15px;
+}
+.regist-common-page .form-control {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  box-shadow: none;
+  box-sizing: border-box;
+  border-color: #d2d6de;
+  padding-right: 42.5px;
+}
+.regist-common-page .form-control:focus {
+  border-color: #3c8dbc;
+  box-shadow: none;
+}
+.regist-common-page .btn {
+  color: #fff;
+  display: block;
+  width: 100%;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  padding: 6px 12px;
+  border-radius: 0;
+  box-shadow: none;
+  border-width: 1px;
+  background-color: #3c8dbc;
+  border-color: #367fa9;
+}
+.regist-common-page .btn:hover {
+  background-color: #307095;
+  border-color: #275c7b;
+}

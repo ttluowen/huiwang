@@ -1,0 +1,132 @@
+/**
+ * 用户登录页。
+ * 
+ * @since 2018-01-28
+ * @version 1.0
+ * @author Luowen
+ */
+
+
+.regist-dialog-common-page {
+    color: #666;
+    font-size: 14px;
+    width: 320px;
+    padding: 20px;
+    background-color: #fff;
+    margin: 0 auto;
+
+
+    .page-logo {
+        font-size: 20px;
+        text-align: center;
+        font-weight: normal;
+        margin-bottom: 30px;
+    }
+    
+    .page-box-msg {
+        text-align: center;
+        padding: 0 20px 20px 20px;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .form-control {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 0;
+        box-shadow: none;
+        box-sizing: border-box;
+        border-color: #d2d6de;
+        padding-right: 42.5px;
+
+        &:focus {
+            border-color: #3c8dbc;
+            box-shadow: none;
+        }
+    }
+    
+    
+    .row {
+        &:before,
+        &:after {
+            content : "\20";
+            display: table;
+            height: 0;
+            width: 0;
+        }
+        &:after {
+            clear: both;
+        }
+        
+        .col-xs-4,
+        .col-xs-8 {
+            color: #666;
+            display: block;
+            float: left;
+            font-weight: 400;
+            height: 42px;
+            line-height: 20px;
+            min-height: 1px;
+            position: relative;
+            box-sizing: border-box;
+        }
+        .col-xs-8 {
+            width: 66.66666667%;
+        }
+        .col-xs-4 {
+            width: 33.33333333%;
+        }
+        
+        
+        .btn {
+            color: #fff;
+            display: block;
+            width: 100%;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            padding: 6px 12px;
+            border-radius: 0;
+            box-shadow: none;
+            border-width: 1px;
+            background-color: #3c8dbc;
+            border-color: #367fa9;
+
+            &:hover {
+                background-color: darken(#3c8dbc, 10%);
+                border-color: darken(#367fa9, 12%);
+            }
+        }
+    }
+    
+    
+    .rember {
+        input[type=checkbox],
+        .label-text {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+    
+    
+    .text-link {
+        color: #3c8dbc;
+        text-decoration: none;
+        margin-right: 5px;
+
+        &:hover {
+            opacity: .8;
+        }
+    }
+}

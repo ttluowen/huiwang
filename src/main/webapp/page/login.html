@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>${siteName} 用户注册成功</title>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+@include("/dim.html")
+<link rel="stylesheet" href="${topDomain}combo/?src=core/iview/2.9.0/iview.min.css,core/iview/2.9.0/iview-extend.min.css&t=${assetsTag}" />
+<link rel="stylesheet" href="${topDomain}assets/base/regist/regist-common.min.css?t=${assetsTag}" />
+</head>
+
+<body class="regist-common-page">
+@include("/include-header.html")
+
+<div id="pbody">
+	<div class="wrapper">
+		<div class="panel-box">
+			<div class="box-header">
+				<i class="ivu-icon ivu-icon-checkmark-circled"></i>
+				<span>用户登录</span>
+			</div>
+			
+			<div class="box-body">
+				<div class="ivu-row">
+					<div class="ivu-col ivu-col-span-12">
+						<img src="${topDomain}assets/base/img/regist-pic-1.jpg" style="width: 80%;" />
+					</div>
+
+					<div class="ivu-col ivu-col-span-12">
+						<iframe src="login-dialog.html?t=dialog&target=_top&redirectUrl=$!{params.redirectUrl}&token=${token}" style="width: 400px; height: 250px; border: none;"></iframe>
+					</div>
+				</div>
+			</div><!-- .box-body END -->
+		</div><!-- panel-box END -->
+	</div><!--.wrapper END -->
+</div><!-- #pbody END -->
+
+@include("/include-footer.html")
+</body>
+</html>
