@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>YiYuen 密码找回</title>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+@include("/dim.html")
+<link rel="stylesheet" href="${topDomain}combo/?src=core/iview/2.9.0/iview.min.css,core/iview/2.9.0/iview-extend.min.css&t=${assetsTag}" />
+<link rel="stylesheet" href="${topDomain}assets/base/regist/regist-common.min.css?t=${assetsTag}" />
+<link rel="stylesheet" href="${topDomain}assets/base/regist/revert.min.css?t=${assetsTag}" />
+</head>
+
+<body class="regist-common-page">
+@include("/include-header.html")
+
+<div id="pbody">
+	<div class="wrapper">
+		<div class="panel-box">
+			<div class="box-header">
+				<i class="ivu-icon ivu-icon-checkmark-circled"></i>
+				<span>密码找回</span>
+			</div>
+			
+			<div class="box-body">
+				<div class="ivu-row">
+					<div class="ivu-col ivu-col-span-12">
+						<img src="${topDomain}assets/base/img/regist-pic-1.jpg" style="width: 80%;" />
+					</div>
+
+					<div class="ivu-col ivu-col-span-12">
+						<div class="form-wrap">
+							<form @submit.prevent="regist" method="post">
+								<div class="form-group">
+									<input v-model="username" type="text" name="username" class="form-control" autofocus placeholder="用户名">
+									<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+								</div>
+								<div class="form-group">
+									<input v-model="email" type="text" name="email" class="form-control" placeholder="邮箱">
+									<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+								</div>
+
+								<div class="form-group ivu-row">
+									<div class="ivu-col ivu-col-span-16">
+										<a href="modifyPassword.html">修改密码</a>
+										<a href="login.html">登录</a>
+									</div>
+
+									<div class="ivu-col ivu-col-span-8">
+										<button type="submit" class="btn">提交</button>
+									</div>
+								</div>
+							</form>
+						</div><!-- .form-wrap END -->
+					</div><!-- .ivu-col END -->
+				</div><!-- .ivu-row END -->
+			</div><!-- .box-body END -->
+		</div><!-- panel-box END -->
+	</div><!-- .wrapper END -->
+</div><!-- #pbody END -->
+
+@include("/include-footer.html")
+
+<script src="${topDomain}combo/?src=core/vue/2.3.0/vue.min.js,core/vue/2.3.0/axios.min.js,core/iview/2.9.0/iview.min.js,core/zepto/1.1.6/zepto.min.js,core/common/util.min.js&t=${assetsTag}"></script>
+<script src="${topDomain}assets/base/regist/revert.min.js?t=${assetsTag}"></script>
+</body>
+</html>

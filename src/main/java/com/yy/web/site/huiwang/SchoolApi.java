@@ -46,21 +46,11 @@ public class SchoolApi extends Responsor {
 	
 	
 	/**
-	 * 获取学校的班级列表。
-	 * 
-	 * @return
-	 */
-	public StatuscodeTypeMap<List<ClassStruct>> getSchoolClass() {
-		
-		return null;
-	}
-	
-	
-	/**
 	 * 获取当前用户加入的学校。
 	 * 
 	 * @return
 	 */
+	@ApiAction(login = true)
 	public StatuscodeTypeMap<List<SchoolStruct>> my() {
 		
 		ClassApi clazz = new ClassApi(getRequest(), getResponse());
@@ -89,7 +79,7 @@ public class SchoolApi extends Responsor {
 			sqlParams.put("userId", getUserId());
 			sqlParams.put("classIds", clazzIdsStr);
 			
-			return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "my", sqlParams, null, SchoolStruct.class);
+			return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", sqlParams, null, SchoolStruct.class);
 		} else {
 			StatuscodeTypeMap<List<SchoolStruct>> sm = new StatuscodeTypeMap<>();
 			sm.setCode(Statuscode.SUCCESS);
@@ -134,11 +124,28 @@ public class SchoolApi extends Responsor {
 	 * 
 	 * @return
 	 */
+	/**
+	 * @return
+	 */
 	@ApiAction(login = true)
 	public StatuscodeMap create() {
 
 		MapValue data = getCreateModifyData();
 		data.put("datetime", DateUtil.get(1));
+		
+		
+		// 检查该学校是否已创建。
+		MapValue sqlParams = new MapValue();
+		sqlParams.put("name", data.getString("name"));
+		sqlParams.put("type", data.getIntValue("type"));
+		sqlParams.put("cityId", data.getIntValue("cityId"));
+
+		StatuscodeMap sm = new StatuscodeMap();
+		MapValue exist = dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", sqlParams);
+		if (exist != null && !exist.isEmpty()) {
+			sm.setDescription("该学校已存在");
+			return sm;
+		}
 
 
 		return dbInsertAndReturnIdMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "create", data);
@@ -172,7 +179,8 @@ public class SchoolApi extends Responsor {
 		return dbUpdateMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "rename", data);
 	}
 	
-	
+
+	@ApiAction
 	public StatuscodeMap list() {
 		
 		MapValue sqlParams = new MapValue();

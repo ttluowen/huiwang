@@ -1,0 +1,8 @@
+.regist-check-page .box-body .sendMail-icon,
+.regist-check-page .box-body .sendMail-text {
+  vertical-align: top;
+}
+.regist-check-page .box-body .sendMail-text p {
+  text-align: right;
+  margin-bottom: 10px;
+}

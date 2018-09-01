@@ -6,25 +6,31 @@
 
 	<sql id="list"><![CDATA[
 		SELECT c.*,
-			   s.*
+			   s.name AS schoolName
 		  FROM `class` AS c
 		  LEFT JOIN `school` AS s
 		    ON c.schoolId = s.schoolId
 		 WHERE 1 = 1
 		#if ($classId && $classId != 0)
-		   AND classId = $classId
+		   AND c.classId = $classId
 		#end
 		#if ($classIds && $classIds != '')
-		   AND classIds IN ($classIds)
-		#end
-		#if ($schoolId && $schoolId != 0)
-		   AND schoolId = $schoolId
-		#end
-		#if ($schoolIds && $schoolIds != '')
-		   AND schoolId IN ($schoolIds)
+		   AND c.classIds IN ($classIds)
 		#end
 		#if ($name && $name != '')
-		   AND name LIKE '%${name}%'
+		   AND c.name LIKE '%${name}%'
+		#end
+		#if ($schoolId && $schoolId != 0)
+		   AND s.schoolId = $schoolId
+		#end
+		#if ($schoolIds && $schoolIds != '')
+		   AND s.schoolId IN ($schoolIds)
+		#end
+		#if ($year && $year != 0)
+		   AND s.year = $year
+		#end
+		#if ($type && $type != '')
+		   AND s.type = '$type'
 		#end
 		;
 	]]></sql>
@@ -36,8 +42,8 @@
 			banner, creator, joined, datetime, status
 		)
 		VALUES (
-			NULL, '$name', $schoolId, '$year', '$field',
-			'$banner', $creator, 0, '$datetime', $status
+			NULL, '$name', $schoolId, '$year', '$!field',
+			'$!banner', $creator, 0, '$datetime', $status
 		);
 	]]></sql>
 	
@@ -46,8 +52,8 @@
 		UPDATE `class`
 		   SET name = '$name',
 		       year = '$year',
-		       field = '$field',
-		       banner = '$banner',
+		       field = '$!field',
+		       banner = '$!banner',
 		 WHERE classId = $classId
 		   AND schoolId = $schoolId
 		   AND creator = $creator

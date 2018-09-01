@@ -98,6 +98,12 @@ public class User extends Responsor {
 
 		// 获取页面参数。
 		MapValue postData = getPostParams();
+		if (postData == null) {
+			sm.setDescription("参数不正确");
+			return sm;
+		}
+		
+		
 		String loginCode = postData.getString("loginCode");
 		String appId = postData.getString("appId");
 		String username = postData.getString("username");
@@ -109,7 +115,7 @@ public class User extends Responsor {
 
 
 		// 验证登录码。
-		if (loginCode.isEmpty()) {
+		if (StringUtil.isEmpty(loginCode)) {
 			sm.setDescription("登录码为空");
 
 			return sm;
@@ -135,14 +141,14 @@ public class User extends Responsor {
 
 
 		Logger.log("开始登录");
-		
-		
+
+
 		// 先关闭 SQL 打印。
 		Database.printSql = false;
-		
+
 		// 执行 SQL 语句。
 		UserNormalStruct dbUser = dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "login", sqlParams, null, UserNormalStruct.class);
-		
+
 		// 登录脚本执行完后再开户 SQL 打印。
 		Database.printSql = true;
 
@@ -316,41 +322,56 @@ public class User extends Responsor {
 	 * 
 	 * @return
 	 */
+	@ApiAction
 	public StatuscodeMap loginByWechatCode() {
-		
+
 		StatuscodeMap sm = new StatuscodeMap();
-		
+
 		try {
 			MapValue postData = getPostParams();
 			String code = postData.getString("code");
 			String nickname = postData.getString("nickname");
 			int gender = postData.getIntValue("gender");
 			String avatar = postData.getString("avatar");
-			
+
 			MapValue params = new MapValue();
 			params.put("appId", DBConfig.get("wechat.minapp.appId"));
-			params.put("secret", "wechat.minapp.secret");
+			params.put("secret", DBConfig.get("wechat.minapp.secret"));
 			params.put("code", code);
 
 			String url = "https://api.weixin.qq.com/sns/jscode2session?appid={appId}&secret={secret}&js_code={code}&grant_type=authorization_code";
 			url = StringUtil.substitute(url, params);
 
 			String content = HttpUtil.get(url);
-			JSONObject result = JSON.parseObject(content);
+			JSONObject wxResult = JSON.parseObject(content);
 			
-			if (result.getIntValue("errcode") != 0) {
-				sm.setDescription(result.getString("errmsg"));
+			if (wxResult.getIntValue("errcode") != 0) {
+				sm.setDescription(wxResult.getString("errmsg"));
+				return sm;
 			}
 
 
+			String token = getAndUpdateToken();
+			if (StringUtil.isEmpty(token)) {
+				token = Visit.generateToken();
+			}
+			
 			VisitProp visit = Visit.get(getAndUpdateToken());
+			if (visit == null) {
+				String[] appIds = {SystemConfig.getAppId()};
+				visit = new Visit(getRequest(), getResponse()).newVisit(appIds);
+			}
+
+
 			if (visit != null) {
-				String openid = result.getString("openid");
-				String sessionKey = result.getString("session_key");
+				String openid = wxResult.getString("openid");
+				String sessionKey = wxResult.getString("session_key");
 				
 				MapValue visitData = visit.getData();
 				visitData.put("openid", openid);
 				visitData.put("sessionKey", sessionKey);
+				
+				UserNormalStruct profile = null;
 				
 				
 				if (!wechatOpenidExists(openid)) {
@@ -361,18 +382,30 @@ public class User extends Responsor {
 					
 					int userId = registFromWechat(params);
 					if (userId != 0) {
-						UserNormalStruct profile = getProfile(userId);
-						if (profile != null) {
-							loginDo(userId, profile.getUsername(), profile.getNickname(), SystemConfig.getAppId(), null, getAndUpdateToken());
-
-							sm.setCode(Statuscode.SUCCESS);
-						} else {
-							sm.setDescription("获取用户信息失败");
-						}
+						profile = getProfile(userId);
 					} else {
 						sm.setDescription("注释来自微信的账号失败");
+						return sm;
 					}
+				} else {
+					profile = getProfileByWechatOpenid(openid, UserNormalStruct.class);
 				}
+
+
+				if (profile != null) {
+					loginDo(profile.getUserId(), profile.getUsername(), profile.getNickname(), SystemConfig.getAppId(), null, getAndUpdateToken());
+
+					
+					MapValue result = new MapValue();
+					result.put("token", token);
+					
+					sm.setResult(result);
+					sm.setCode(Statuscode.SUCCESS);
+				} else {
+					sm.setDescription("获取用户信息失败");
+				}
+			} else {
+				sm.setDescription("token 生成失败，请重新登录");
 			}
 		} catch (IOException e) {
 			Logger.printStackTrace(e);
@@ -453,11 +486,14 @@ public class User extends Responsor {
 		
 		// 更新当前访问的用户。
 		VisitProp visit = Visit.get(token);
-		visit.setLoginCode("");
-		visit.setUserId(0);
-		visit.setUsername("");
-		visit.setNickname("");
-		visit.setDatetime(new Date().getTime());
+
+		if (visit != null) {
+			visit.setLoginCode("");
+			visit.setUserId(0);
+			visit.setUsername("");
+			visit.setNickname("");
+			visit.setDatetime(new Date().getTime());
+		}
 	}
 	
 	
@@ -641,6 +677,23 @@ public class User extends Responsor {
 		sqlParams.put("username", username);
 	
 	
+		return getProfile(sqlParams, clazz);
+	}
+	
+	
+	/**
+	 * 根据微信 openid 号获取用户的基本信息。
+	 * 
+	 * @param wechatOpenid
+	 * @param clazz
+	 * @return
+	 */
+	public <T> T getProfileByWechatOpenid(String wechatOpenid, Class<T> clazz) {
+		
+		MapValue sqlParams = new MapValue();
+		sqlParams.put("wechatOpenid", wechatOpenid);
+		
+
 		return getProfile(sqlParams, clazz);
 	}
 	

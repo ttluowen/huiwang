@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>YiYuen 用户登录</title>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+@include("/dim.html")
+#if($isLogin)
+<script>var USERNAME="$username";</script>
+#end
+<link rel="stylesheet" href="${topDomain}combo/?src=core/css/base-min.css,base/regist/regist-dialog-common.min.css" />
+</head>
+
+<body class="regist-dialog-common-page">
+<div id="vueRoot">
+	#if (!$params.t || $params.t != "dialog")
+	<div class="page-logo">
+		<b>YiYuen</b> 用户登录
+	</div>
+	#end
+	
+	<div class="page-box-body">
+		<p class="page-box-msg">请输入用户名密码登录</p>
+
+		<form @submit.prevent="login" method="post">
+			<input type="hidden" name="loginCode" value="$loginCode" />
+			<input type="hidden" name="device" :value="device" />
+
+			<div class="form-group">
+				<input v-model="username" type="text" name="username" class="form-control" autofocus placeholder="用户名">
+				<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+			</div>
+			<div class="form-group">
+				<input v-model="password" type="password" name="password" class="form-control" placeholder="密码">
+				<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-8">
+					<label class="rember">
+						<input v-model="quickLogin" type="checkbox" />
+						<span class="label-text">记住密码</span>
+					</label>
+				</div>
+				<div class="col-xs-4">
+					<button type="submit" class="btn">登录</button>
+				</div>
+			</div>
+		</form>
+
+		<div class="row">
+			<a class="text-link" href="revert.html" target="_blank">密码找回</a>
+			<a class="text-link" href="regist.html?redirectUrl=$!{params.redirectUrl}" :target="target" class="text-center">注册</a>
+		</div>
+	</div>
+</div>
+
+<script src="${topDomain}combo/?src=core/vue/2.3.0/vue.min.js,core/vue/2.3.0/axios.min.js,core/js/zepto-min.js,core/common/util.min.js&t=${assetsTag}"></script>
+<script src="${topDomain}assets/base/regist/login-dialog.min.js"></script>
+</body>
+</html>

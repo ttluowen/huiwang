@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+#if (!$isLogin)
+	@include("login.html")
+#end
+</head>
+
+<body>
+<h1>${siteName}</h1>
+
+<p>
+	${nickname}<br />
+	${token}<br />
+	<a href="/api/base/user/logout?token=${token}" target="iframe" onclick="location.reload();">退出</a>
+	<iframe name="iframe" style="width: 1px; height: 1px;" /></iframe>
+</p>
+</body>
+</html>

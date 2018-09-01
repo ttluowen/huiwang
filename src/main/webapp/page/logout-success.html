@@ -1,0 +1,10 @@
+@include("/dim.html")
+<script src="${topDomain}assets/core/common/util.min.js"></script>
+<script>
+util.removeCookie("quickLoginKey", {
+	path: "/",
+	domain: document.domain,
+	expires: -1,
+});
+location.href = decodeURIComponent(util.getParam("redirect") || "") || "index.html";
+</script>

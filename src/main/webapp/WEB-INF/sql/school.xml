@@ -37,8 +37,8 @@
 			datetime, status
 		)
 		VALUES (
-			NULL, '$name', '$historyNames', '$type', '$province',
-			'$area', $cityId, '$banner', '$description', $creator,
+			NULL, '$name', '$!historyNames', '$!type', '$!province',
+			'$!area', $cityId, '$!banner', '$!description', $creator,
 			'$datetime', $status
 		);
 	]]></sql>
@@ -47,12 +47,12 @@
 	<sql id="modify"><![CDATA[
 		UPDATE `school`
 		   SET name = '$name',
-		       historyNames = '$historyNames',
-		       province = '$province',
-		       area = '$area',
+		       historyNames = '$!historyNames',
+		       province = '$!province',
+		       area = '$!area',
 		       cityId = $cityId,
-		       banner = '$banner',
-		       description = '$description'
+		       banner = '$!banner',
+		       description = '$!description'
 		 WHERE schoolId = $schoolId
 		   AND creator = $creator
 		;

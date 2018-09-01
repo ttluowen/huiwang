@@ -1,0 +1,123 @@
+@charset "utf-8";
+/*
+ * 浏览器默认值重置及通用样式设置文件。
+ */
+
+
+/** 清除内外边距 **/
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, /* structural elements 结构元素 */ dl, dt, dd, ul, ol, li, /* list elements 列表元素 */ pre, /* text formatting elements 文本格式元素 */ form, fieldset, legend, button, input, textarea, /* form elements 表单元素 */ th, td /* table elements 表格元素 */ {
+	margin: 0;
+	padding: 0;
+}
+/** 设置默认字体 **/
+body, button, input, select, textarea /* for ie */ {
+	/*font: 12px/1.5 tahoma, arial, \5b8b\4f53, sans-serif;*/
+	font:12px/1.5 \5FAE\8F6F\96C5\9ED1, \5B8B\4F53, \5E7C\5706, Arial, Verdana;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-size: 100%;
+}
+address, cite, dfn, em, var {
+	font-style: normal;
+} /* 将斜体扶正 */
+code, kbd, pre, samp {
+	font-family: courier new, courier, monospace;
+} /* 统一等宽字体 */
+small {
+	font-size: 12px;
+} /* 小于 12px 的中文很难阅读，让 small 正常化 */
+/** 重置列表元素 **/
+ul, ol {
+	list-style: none;
+}
+/** 重置文本格式元素 **/
+a {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+sup {
+	vertical-align: text-top;
+} /* 重置，减少对行高的影响 */
+sub {
+	vertical-align: text-bottom;
+}
+/** 重置表单元素 **/
+legend {
+	color: #000;
+} /* for ie6 */
+fieldset, img {
+	border: 0;
+} /* img 搭车：让链接里的 img 无边框 */
+button, input, select, textarea {
+	font-size: 100%;
+} /* 使得表单元素在 ie 下能继承字体大小 */
+/* 注：optgroup 无法扶正 */
+
+/** 重置表格元素 **/
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	word-break:break-all;
+}
+/* 重置 HTML5 元素 */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
+	display: block;
+	margin: 0;
+	padding: 0;
+}
+mark {
+	background: #ff0;
+}
+
+/* 隐藏。 */
+.display-hidden {
+	display: none;
+}
+
+.visibility-hidden {
+	visibility: hidden;
+}
+
+/* 清除浮动。 */
+.after-clear:after {
+	content: '\20';
+	display: block;
+	height: 0;
+	clear: both;
+}
+.after-clear {
+	*zoom: 1;
+}
+
+/* 行块显示。 */
+.display-inline-block {
+	display: inline-block;
+	*display: inline;
+	*zoom:1;
+}
+
+
+
+/* loading 图片。 */
+.rt-loading-img {
+	display: block;
+	position: absolute;
+	z-index: 100;
+}
+
+
+/* 半透明遮罩层。 */
+.rt-mask {
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 1000;
+	width: 100%;
+	height: 100%;
+	background-color: #000;
+	filter: alpha(opacity=75);
+	opacity: .75;
+}

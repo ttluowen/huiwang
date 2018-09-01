@@ -1,0 +1,45 @@
+/**
+ * 新报表分析里的全局样式。
+ *
+ * @since 2015-01-14
+ * @version 2.0
+ * @author Luowen
+ */
+
+
+body {
+	background-color: #fff;
+}
+
+
+/** 选项卡样式。 */
+.rt-tab .tab-titles {
+	margin-left: 10px;
+}
+.rt-tab .tab-titles:after {
+	content: "\20";
+	display: block;
+	height: 0;
+	clear: both;
+}
+.rt-tab .tab-title {
+	float: left;
+	cursor: pointer;
+	padding: 7px 10px;
+	border-width: 1px 1px 0 0;
+	border-style: solid;
+	border-color: #ccc;
+}
+.rt-tab .tab-title:first-child {
+	border-left: 1px solid #ccc;
+}
+.rt-tab .tab-title.actived {
+	color: #768498;
+	background-color: #dfe4ea;
+}
+.rt-tab .tab-contents {
+	padding: 10px;
+	border: 1px solid #ccc;
+}
+
+
