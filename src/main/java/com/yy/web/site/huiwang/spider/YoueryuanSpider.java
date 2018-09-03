@@ -22,7 +22,7 @@ import com.yy.util.string.StringUtil;
 import com.yy.web.config.SystemConfig;
 import com.yy.web.site.spider.Spider;
 
-public class DaxueSpider {
+public class YoueryuanSpider {
 
 	private static void mainInit() {
 
@@ -48,8 +48,8 @@ public class DaxueSpider {
 
 		
 		for (int page = 1; page <= totalPage; page++) {
-			String baseUrl = "https://data-gkcx.eol.cn/soudaxue/queryschool.html?messtype=json&callback=jQuery18309684761254968921_1535765528517&province=&schooltype=&page=" + page + "&size=" + pageSize + "&keyWord1=&schoolprop=&schoolflag=&schoolsort=&schoolid=&_=1535765545206";
-			HttpGet get = new HttpGet(baseUrl);
+			String a = "https://data-gkcx.eol.cn/soudaxue/queryschool.html?messtype=json&callback=jQuery18309684761254968921_1535765528517&province=&schooltype=&page=" + page + "&size=" + pageSize + "&keyWord1=&schoolprop=&schoolflag=&schoolsort=&schoolid=&_=1535765545206";
+			HttpGet get = new HttpGet(a);
 			get.addHeader("Referer", "https://gkcx.eol.cn/soudaxue/queryschool.html?&province=&page=" + page);
 	
 			HttpResponse response = client.execute(get);
@@ -63,16 +63,16 @@ public class DaxueSpider {
 				}
 			}
 
-			String responseText = BufferedInReader.read(entity.getContent(), StringUtil.UTF8);
-			JSONObject obj = JSON.parseObject(responseText);
+			String b = BufferedInReader.read(entity.getContent(), StringUtil.UTF8);
+			JSONObject obj = JSON.parseObject(b);
 			JSONArray schoolList = obj.getJSONArray("school");
 
 			for (Object item : schoolList) {
-				JSONObject itemJson = (JSONObject) item;
-				String name = itemJson.getString("schoolname");
-				String province = itemJson.getString("province");
-				String description = itemJson.getString("jianjie");
-				String historyNames = itemJson.getString("oldname");
+				JSONObject it = (JSONObject) item;
+				String name = it.getString("schoolname");
+				String province = it.getString("province");
+				String description = it.getString("jianjie");
+				String historyNames = it.getString("oldname");
 				
 				MapValue map = new MapValue();
 				map.put("name", name);

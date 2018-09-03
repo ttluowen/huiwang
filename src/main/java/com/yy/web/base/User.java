@@ -334,10 +334,18 @@ public class User extends Responsor {
 			int gender = postData.getIntValue("gender");
 			String avatar = postData.getString("avatar");
 
+			
+			String appId = DBConfig.getValue("wechat.minapp.appId");
+			String secret = DBConfig.getValue("wechat.minapp.secret");
+			
+//			appId = "wxc10e285ab4f5990e";
+//			secret = "4a2ca1746bfafd84bc57b170b6fd2494";
+			
 			MapValue params = new MapValue();
-			params.put("appId", DBConfig.get("wechat.minapp.appId"));
-			params.put("secret", DBConfig.get("wechat.minapp.secret"));
+			params.put("appId", appId);
+			params.put("secret", secret);
 			params.put("code", code);
+
 
 			String url = "https://api.weixin.qq.com/sns/jscode2session?appid={appId}&secret={secret}&js_code={code}&grant_type=authorization_code";
 			url = StringUtil.substitute(url, params);
@@ -368,6 +376,10 @@ public class User extends Responsor {
 				String sessionKey = wxResult.getString("session_key");
 				
 				MapValue visitData = visit.getData();
+				if (visitData == null) {
+					visitData = new MapValue();
+					visit.setData(visitData);
+				}
 				visitData.put("openid", openid);
 				visitData.put("sessionKey", sessionKey);
 				
@@ -379,6 +391,7 @@ public class User extends Responsor {
 					params.put("nickname", nickname);
 					params.put("gender", gender);
 					params.put("avatar", avatar);
+					params.put("wechatOpenid", openid);
 					
 					int userId = registFromWechat(params);
 					if (userId != 0) {
@@ -831,18 +844,12 @@ public class User extends Responsor {
 	 * @return
 	 */
 	public int registFromWechat(MapValue data) {
-		
+
 		String username = generateWechatUsername();
-		String nickname = data.getString("nickName");
-		int gender = data.getIntValue("gender");
-		String avatar = data.getString("avatarUrl");
-		
 		data.put("username", username);
-		data.put("nickname", nickname);
-		data.put("gender", gender);
-		data.put("avatar", avatar);
-		
-		
+		data.put("status", 1);
+
+
 		return dbInsertAndReturnId(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "regist", data);
 	}
 
