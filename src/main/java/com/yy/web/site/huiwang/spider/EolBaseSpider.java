@@ -54,6 +54,7 @@ public class EolBaseSpider {
 		for (String province : provinces) {
 			list.addAll(collectedProvince(province));
 		}
+//		list.addAll(collectedProvince(provinces.get(0)));
 		
 		if (list != null && list.size() > 0) {
 			saveData(list);
@@ -83,6 +84,8 @@ public class EolBaseSpider {
 			String location = item.text().trim();
 			if (!StringUtil.isEmpty(location)) {
 				provinces.add(location);
+			} else {
+				Logger.log("province item " + item.text() + " 无效");
 			}
 		}
 		
@@ -115,7 +118,7 @@ public class EolBaseSpider {
 			data = new MapValue();
 			data.put("schoolType", schoolType);
 			data.put("location", province);
-			data.put("page", page);
+			data.put("page", i);
 
 			url = StringUtil.substitute(BASE_URL, data);
 			doc = Jsoup.connect(url).get();
@@ -125,17 +128,18 @@ public class EolBaseSpider {
 				try {
 					String name = item.selectFirst("h2 a").text().trim();
 					Element descriptionP = item.selectFirst(".txt_l p");
+					String description = "";
 					if (descriptionP != null) {
-						String description = descriptionP.text().replace("学校简介：", "").replace("。。。", "").trim();
-						
-						MapValue map = new MapValue();
-						map.put("province", province);
-						map.put("name", name);
-						map.put("description", description);
-						
-						list.add(map);
+						description = descriptionP.text().replace("学校简介：", "").replace("。。。", "").trim();
 					}
 					
+					
+					MapValue map = new MapValue();
+					map.put("province", province);
+					map.put("name", name);
+					map.put("description", description);
+					
+					list.add(map);
 				} catch (Exception e) {
 					continue;
 				}

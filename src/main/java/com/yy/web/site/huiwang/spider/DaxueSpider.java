@@ -97,6 +97,6 @@ public class DaxueSpider {
 			fileContent.append(StringUtil.substitute(sql, item)).append("\n");
 		}
 		
-		FileUtil.save(SystemConfig.getSystemPath() + "out/daxue.sql", fileContent.toString());
+		FileUtil.save(SystemConfig.getSystemPath() + "out/大学.sql", fileContent.toString());
 	}
 }
