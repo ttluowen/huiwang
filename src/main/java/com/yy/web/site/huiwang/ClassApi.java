@@ -49,6 +49,10 @@ public class ClassApi extends Responsor {
 		int schoolId = getIntParam("schoolId");
 		int year = getIntParam("year");
 		
+		if (schoolId == 0) {
+			schoolId = 1;
+		}
+		
 		MapValue sqlParams = new MapValue();
 		sqlParams.put("schoolId", schoolId);
 		sqlParams.put("year", year);
