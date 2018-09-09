@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.yy.statuscode.Statuscode;
 import com.yy.statuscode.StatuscodeMap;
+import com.yy.statuscode.StatuscodeTypeMap;
+import com.yy.util.map.MapValue;
 import com.yy.util.string.StringUtil;
 import com.yy.web.Dim;
 import com.yy.web.Responsor;
@@ -27,7 +29,7 @@ import com.yy.web.site.huiwang.struct.CityStruct;
  */
 public class CityApi extends Responsor {
 	
-	public static final String SQL_NAMESPACE = "city.";
+	public static final String SQL_NAMESPACE = "base.city.";
 	
 
 	/**
@@ -48,9 +50,37 @@ public class CityApi extends Responsor {
 	 * @return
 	 */
 	@ApiAction
-	public StatuscodeMap levelList() {
+	public StatuscodeTypeMap<List<CityStruct>> levelList() {
 		
-		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", getParams());
+		return list(getParams());
+	}
+	
+	
+	/**
+	 * 获取热闹城市列表。
+	 * 
+	 * @return
+	 */
+	@ApiAction
+	public StatuscodeTypeMap<List<CityStruct>> hotList() {
+		
+		MapValue params = new MapValue();
+		params.put("hot", true);
+		
+		
+		return list(params);
+	}
+	
+	
+	/**
+	 * 获取指定参数的城市列表。
+	 * 
+	 * @param params
+	 * @return
+	 */
+	protected StatuscodeTypeMap<List<CityStruct>> list(MapValue params) {
+		
+		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", params, null, CityStruct.class);
 	}
 	
 	
@@ -99,6 +129,7 @@ public class CityApi extends Responsor {
 				}
 			}
 		}
+		
 		
 		
 		StatuscodeMap sm = new StatuscodeMap();

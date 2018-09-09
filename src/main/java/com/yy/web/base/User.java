@@ -333,6 +333,12 @@ public class User extends Responsor {
 			String nickname = postData.getString("nickname");
 			int gender = postData.getIntValue("gender");
 			String avatar = postData.getString("avatar");
+			
+			
+//			code = "001pmv411ubnJY1BEU411GHs411pmv4q";
+//			gender = 1;
+//			nickname = "胡思立";
+//			avatar = "https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLgNFs5tFny9SD50jcX85O1352q12icmoU9Ys7s802ibXrhicbpblEicwYUHwTYGhLicZ1H29YwhLGeS1g/132";
 
 			
 			String appId = DBConfig.getValue("wechat.minapp.appId");

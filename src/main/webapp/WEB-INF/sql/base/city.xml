@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
 	<!-- 命名空间。 -->
-	<namespace>city</namespace>
+	<namespace>base.city</namespace>
 
 
 	<sql id="list"><![CDATA[

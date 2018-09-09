@@ -3,7 +3,7 @@
 	<factory key="common" name="通用版本" version="100.0">
 		<db id="mysql">
 			<driver>com.mysql.jdbc.Driver</driver>
-			<host>115.29.5.116</host>
+			<host>120.27.129.111</host>
 			<port>3306</port>
 			<username>huiwang</username>
 			<password>m04DqewDJM</password>

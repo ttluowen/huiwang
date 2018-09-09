@@ -34,6 +34,8 @@
 
 
 	<path name="city" class="com.yy.web.site.huiwang.CityApi" />
+	<path name="province" class="com.yy.web.site.huiwang.ProvinceApi" />
+	
 	<path name="class" class="com.yy.web.site.huiwang.ClassApi" />
 	<path name="school" class="com.yy.web.site.huiwang.SchoolApi" />
 	<path name="total" class="com.yy.web.site.huiwang.TotalApi" />
