@@ -1,6 +1,7 @@
 package com.yy.web.site.huiwang;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -108,12 +109,11 @@ public class CityApi extends Responsor {
 		}
 		
 		// 对省份排序。
-		provinceList.sort(new Comparator<String>() {
+		Collections.sort(provinceList, new Comparator<String>() {
 			public int compare(String arg0, String arg1) {
 				return StringUtil.unNull(arg0).compareTo(StringUtil.unNull(arg1));
 			}
 		});
-
 
 		// 取出各省份的城市。
 		for (String province : provinceList) {
@@ -129,7 +129,6 @@ public class CityApi extends Responsor {
 				}
 			}
 		}
-		
 		
 		
 		StatuscodeMap sm = new StatuscodeMap();

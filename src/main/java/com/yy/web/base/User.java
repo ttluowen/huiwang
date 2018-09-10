@@ -19,7 +19,6 @@ import com.yy.statuscode.StatuscodeMap;
 import com.yy.util.date.DateUtil;
 import com.yy.util.file.FileUtil;
 import com.yy.util.http.HttpUtil;
-import com.yy.util.mail.MailSenderFactory;
 import com.yy.util.map.MapValue;
 import com.yy.util.number.NumberUtil;
 import com.yy.util.regexp.RegexpUtil;
@@ -918,6 +917,7 @@ public class User extends Responsor {
 	 * @param profile
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	private String registDo(UserNormalStruct profile) {
 
 		String code = StringUtil.gsid(8);
@@ -968,16 +968,6 @@ public class User extends Responsor {
 		// 邮件标题和内容。
 		String subject = siteName + " 用户注册验证码";
 		String content = TemplateUtil.velocity(FileUtil.read(getConfigFile("base/userRegistMailTemplate.txt")), data);
-		
-		
-		// 发送邮件。
-		try {
-			MailSenderFactory.getSender().send(email, subject, content);
-		} catch (Exception e) {
-			Logger.printStackTrace("email[" + email + "]", e);
-
-			return null;
-		}
 
 
 		return code;
@@ -1199,6 +1189,7 @@ public class User extends Responsor {
 	 * @param password
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	private int sendRevertMail(String nickname, String email, String password) {
 		
 		String domain = StringUtil.appendEndsWith(SystemConfig.getConfig("domain", DBConfig.getValue("domain")), "/");
@@ -1216,16 +1207,6 @@ public class User extends Responsor {
 		// 邮件标题和内容。
 		String subject = siteName + " 密码找回成功";
 		String content = TemplateUtil.velocity(FileUtil.read(getConfigFile("base/userRevertMailTemplate.txt")), data);
-		
-		
-		// 发送邮件。
-		try {
-			MailSenderFactory.getSender().send(email, subject, content);
-			
-			return Statuscode.SUCCESS;
-		} catch (Exception e) {
-			Logger.printStackTrace("email[" + email + "]", e);
-		}
 		
 		
 		return Statuscode.FAILD;
