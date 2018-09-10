@@ -342,7 +342,11 @@ public class User extends Responsor {
 			
 			String appId = DBConfig.getValue("wechat.minapp.appId");
 			String secret = DBConfig.getValue("wechat.minapp.secret");
-			
+
+			// huiwang
+//			appId = "wxb404abf0dff5066b";
+//			secret = "68a62383065c8bd3709dc4857f19ee66";
+			// MinApp
 //			appId = "wxc10e285ab4f5990e";
 //			secret = "4a2ca1746bfafd84bc57b170b6fd2494";
 			
