@@ -1,25 +1,21 @@
 package com.yy.web.site.huiwang;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.yy.statuscode.Statuscode;
+import org.apache.commons.lang3.StringUtils;
+
 import com.yy.statuscode.StatuscodeMap;
 import com.yy.statuscode.StatuscodeTypeMap;
-import com.yy.util.array.ArrayUtil;
 import com.yy.util.date.DateUtil;
 import com.yy.util.map.MapValue;
 import com.yy.web.Dim;
 import com.yy.web.Responsor;
 import com.yy.web.request.annotation.ApiAction;
 import com.yy.web.request.annotation.MethodEnum;
-import com.yy.web.site.huiwang.struct.ClassStruct;
 import com.yy.web.site.huiwang.struct.SchoolStruct;
 
 /**
@@ -47,47 +43,41 @@ public class SchoolApi extends Responsor {
 	
 	
 	/**
+	 * 获取我加入的学校的编号。
+	 * 
+	 * @return
+	 */
+	private List<Integer> mySchoolIds() {
+		
+		MapValue sqlParams = new MapValue();
+		sqlParams.put("userId", getUserId());
+		
+		
+		List<Integer> ids = new ArrayList<>();
+		List<MapValue> list = dbSelect(Dim.DB_SOURCE_MYSQL, ClassApi.SQL_NAMESPACE + "getUserClasses", sqlParams);
+		if (list != null) {
+			for (MapValue item : list) {
+				ids.add(item.getInteger("schoolId"));
+			}
+		}
+
+
+		return ids;
+	}
+	
+	
+	/**
 	 * 获取当前用户加入的学校。
 	 * 
 	 * @return
 	 */
 	@ApiAction(login = true)
 	public StatuscodeTypeMap<List<SchoolStruct>> my() {
+
+		MapValue sqlParams = new MapValue();
+		sqlParams.put("schoolIds", StringUtils.join(mySchoolIds(), ", "));
 		
-		ClassApi clazz = new ClassApi(getRequest(), getResponse());
-		copyTo(clazz);
-
-		StatuscodeTypeMap<List<ClassStruct>> clazzSm = clazz.my();
-		if (clazzSm.getCode() == Statuscode.SUCCESS) {
-			// 查询用户加入的班级。
-			List<ClassStruct> clazzList = clazzSm.getResult();
-			Map<Integer, Boolean> clazzMap = new HashMap<>();
-			
-			for (ClassStruct item : clazzList) {
-				clazzMap.put(item.getSchoolId(), true);
-			}
-			
-			Iterator<Integer> keys = clazzMap.keySet().iterator();
-			List<Integer> clazzIds = new ArrayList<>();
-			while (keys.hasNext()) {
-				clazzIds.add(keys.next());
-			}
-
-			String clazzIdsStr = ArrayUtil.join(ArrayUtil.toInt(clazzIds.toArray(new Integer[0])));
-			
-			
-			MapValue sqlParams = new MapValue();
-			sqlParams.put("userId", getUserId());
-			sqlParams.put("classIds", clazzIdsStr);
-			
-			return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", sqlParams, null, SchoolStruct.class);
-		} else {
-			StatuscodeTypeMap<List<SchoolStruct>> sm = new StatuscodeTypeMap<>();
-			sm.setCode(Statuscode.SUCCESS);
-			sm.setDescription("没有任何记录");
-
-			return sm;
-		}
+		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", sqlParams, null, SchoolStruct.class);
 	}
 	
 	
@@ -178,11 +168,38 @@ public class SchoolApi extends Responsor {
 	}
 	
 
+	/**
+	 * 学校列表（不包括分校）。
+	 * 
+	 * @return
+	 */
 	@ApiAction
 	public StatuscodeMap list() {
 		
 		MapValue sqlParams = new MapValue();
+		sqlParams.put("type", getStringParam("type"));
 		sqlParams.put("cityId", getIntParam("cityId"));
+		sqlParams.put("province", getStringParam("province"));
+		sqlParams.put("headSchoolId", -1);
+		
+		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", sqlParams);
+	}
+	
+
+	/**
+	 * 分校列表。
+	 * 
+	 * @return
+	 */
+	@ApiAction
+	public StatuscodeMap subList() {
+		
+		MapValue sqlParams = new MapValue();
+		sqlParams.put("type", getStringParam("type"));
+		sqlParams.put("cityId", getIntParam("cityId"));
+		sqlParams.put("province", getStringParam("province"));
+		sqlParams.put("headSchoolId", getIntParam("headSchoolId"));
+		
 		
 		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", sqlParams);
 	}
@@ -197,7 +214,7 @@ public class SchoolApi extends Responsor {
 	public StatuscodeMap search() {
 		
 		MapValue sqlParams = new MapValue();
-		sqlParams.put("q", getStringParams("q"));
+		sqlParams.put("name", getStringParam("q"));
 		
 		
 		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", sqlParams);

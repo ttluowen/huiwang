@@ -15,7 +15,7 @@
 		   AND c.classId = $classId
 		#end
 		#if ($classIds && $classIds != '')
-		   AND c.classIds IN ($classIds)
+		   AND c.classId IN ($classIds)
 		#end
 		#if ($name && $name != '')
 		   AND c.name LIKE '%${name}%'
@@ -32,6 +32,7 @@
 		#if ($type && $type != '')
 		   AND s.type = '$type'
 		#end
+		LIMIT 1000
 		;
 	]]></sql>
 	
@@ -79,6 +80,14 @@
 		 			  FROM class_user
 		 			 WHERE classId = $classId
 				)
+		;
+	]]></sql>
+	
+	
+	<sql id="getUserClasses"><![CDATA[
+		SELECT *
+		  FROM class_user
+		 WHERE userId = $userId
 		;
 	]]></sql>
 	

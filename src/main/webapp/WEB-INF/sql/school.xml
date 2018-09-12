@@ -17,8 +17,13 @@
 		#if ($name && $name != '')
 		   AND name LIKE '%${name}%'
 		#end
+		#if ($headSchoolId && $headSchoolId != -1)
+		   AND headSchoolId = $headSchoolId
+		#else
+		   AND (headSchoolId = 0 || headSchoolId IS NULL)
+		#end
 		#if ($type && $type != 0)
-		   AND type = $type
+		   AND type = '$type'
 		#end
 		#if ($province && $province != '')
 		   AND province = '$province'
@@ -26,6 +31,7 @@
 		#if ($cityId && $cityId != 0)
 		   AND cityId = $cityId
 		#end
+		LIMIT 1000
 		;
 	]]></sql>
 	

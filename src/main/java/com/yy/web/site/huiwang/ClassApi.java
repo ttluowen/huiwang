@@ -1,9 +1,12 @@
 package com.yy.web.site.huiwang;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.jsoup.helper.StringUtil;
 
 import com.yy.statuscode.StatuscodeMap;
 import com.yy.statuscode.StatuscodeTypeMap;
@@ -80,15 +83,38 @@ public class ClassApi extends Responsor {
 	
 	
 	/**
+	 * 获取当前加入的班级的编号。
+	 * 
+	 * @return
+	 */
+	private List<Integer> myClassIds() {
+		
+		MapValue sqlParams = new MapValue();
+		sqlParams.put("userId", getUserId());
+		
+		
+		List<Integer> ids = new ArrayList<>();
+		List<MapValue> list = dbSelect(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "getUserClasses", sqlParams);
+		if (list != null) {
+			for (MapValue item : list) {
+				ids.add(item.getInteger("classId"));
+			}
+		}
+		
+		return ids;
+	}
+	
+	
+	/**
 	 * 获取当前用户加入的班级。
 	 * 
 	 * @return
 	 */
 	@ApiAction(login = true)
 	public StatuscodeTypeMap<List<ClassStruct>> my() {
-		
+
 		MapValue sqlParams = new MapValue();
-		sqlParams.put("userId", getUserId());
+		sqlParams.put("classIds", StringUtil.join(myClassIds(), ", "));
 		
 		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", sqlParams, null, ClassStruct.class);
 	}
