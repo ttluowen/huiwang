@@ -349,7 +349,7 @@ public class User extends Responsor {
 			// MinApp
 //			appId = "wxc10e285ab4f5990e";
 //			secret = "4a2ca1746bfafd84bc57b170b6fd2494";
-			
+
 			MapValue params = new MapValue();
 			params.put("appId", appId);
 			params.put("secret", secret);

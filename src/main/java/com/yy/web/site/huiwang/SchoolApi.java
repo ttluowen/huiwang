@@ -18,6 +18,7 @@ import com.yy.util.map.MapValue;
 import com.yy.web.Dim;
 import com.yy.web.Responsor;
 import com.yy.web.request.annotation.ApiAction;
+import com.yy.web.request.annotation.MethodEnum;
 import com.yy.web.site.huiwang.struct.ClassStruct;
 import com.yy.web.site.huiwang.struct.SchoolStruct;
 
@@ -124,10 +125,7 @@ public class SchoolApi extends Responsor {
 	 * 
 	 * @return
 	 */
-	/**
-	 * @return
-	 */
-	@ApiAction(login = true)
+	@ApiAction(login = true, methods = {MethodEnum.POST})
 	public StatuscodeMap create() {
 
 		MapValue data = getCreateModifyData();
@@ -157,7 +155,7 @@ public class SchoolApi extends Responsor {
 	 * 
 	 * @return
 	 */
-	@ApiAction(login = true)
+	@ApiAction(login = true, methods = {MethodEnum.POST})
 	public StatuscodeMap modify() {
 	
 		MapValue data = getCreateModifyData();
