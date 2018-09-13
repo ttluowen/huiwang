@@ -347,8 +347,8 @@ public class User extends Responsor {
 //			appId = "wxb404abf0dff5066b";
 //			secret = "68a62383065c8bd3709dc4857f19ee66";
 			// MinApp
-//			appId = "wxc10e285ab4f5990e";
-//			secret = "4a2ca1746bfafd84bc57b170b6fd2494";
+			appId = "wxc10e285ab4f5990e";
+			secret = "4a2ca1746bfafd84bc57b170b6fd2494";
 
 			MapValue params = new MapValue();
 			params.put("appId", appId);
