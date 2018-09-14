@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.yy.statuscode.StatuscodeMap;
 import com.yy.web.Dim;
 import com.yy.web.Responsor;
+import com.yy.web.request.annotation.ApiAction;
 
 /**
  * 统计接口。
@@ -34,9 +35,34 @@ public class TotalApi extends Responsor {
 	 * 
 	 * @return
 	 */
+	@ApiAction
 	public StatuscodeMap schoolCount() {
 		
-		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "schoolCount", null);
+		return dbSelectOneMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "schoolCount", null);
+	}
+
+	
+	/**
+	 * 学校人数统计。
+	 * 
+	 * @return
+	 */
+	@ApiAction
+	public StatuscodeMap schoolUserCount() {
+		
+		return dbSelectOneMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "schoolUserCount", null);
+	}
+
+	
+	/**
+	 * 班级人数统计。
+	 * 
+	 * @return
+	 */
+	@ApiAction
+	public StatuscodeMap classUserCount() {
+		
+		return dbSelectOneMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "classUserCount", null);
 	}
 	
 	
@@ -45,8 +71,9 @@ public class TotalApi extends Responsor {
 	 * 
 	 * @return
 	 */
+	@ApiAction
 	public StatuscodeMap userCount() {
 		
-		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "userCount", null);
+		return dbSelectOneMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "userCount", null);
 	}
 }

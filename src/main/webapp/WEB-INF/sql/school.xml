@@ -38,14 +38,14 @@
 	
 	<sql id="create"><![CDATA[
 		INSERT INTO `school` (
-			schoolId, name, historyNames, type, province,
-			area, cityId, banner, description, creator,
-			datetime, status
+			schoolId, name, historyNames, headSchoolId, type,
+			province, area, cityId, address, phone,
+			banner, description, creator, datetime, status
 		)
 		VALUES (
-			NULL, '$name', '$!historyNames', '$!type', '$!province',
-			'$!area', $cityId, '$!banner', '$!description', $creator,
-			'$datetime', $status
+			NULL, '$name', '$!historyNames', $headSchoolId, '$!type',
+			'$!province', '$!area', $cityId, '$!address', '$!phone',
+			'$!banner', '$!description', $creator, '$datetime', $status
 		);
 	]]></sql>
 
@@ -57,6 +57,8 @@
 		       province = '$!province',
 		       area = '$!area',
 		       cityId = $cityId,
+		       address = '$!address',
+		       phone = '$!phone',
 		       banner = '$!banner',
 		       description = '$!description'
 		 WHERE schoolId = $schoolId

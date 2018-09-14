@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<!-- 命名空间。 -->
+	<namespace>total</namespace>
+
+
+	<sql id="schoolCount"><![CDATA[
+		SELECT COUNT(*) AS count
+		  FROM school
+		 WHERE 1 = 1
+		#if ($type && $type != '')
+		   AND type = '$type'
+		#end
+		;
+	]]></sql>
+	
+	
+	<sql id="schoolUserCount"><![CDATA[
+		SELECT COUNT(*) AS count
+		  FROM class_user
+		 WHERE schoolId = $schoolId
+		;
+	]]></sql>
+	
+	
+	<sql id="classUserCount"><![CDATA[
+		SELECT COUNT(*) AS count
+		  FROM class_user
+		 WHERE classId = $classId
+		;
+	]]></sql>
+	
+	
+	<sql id="userCount"><![CDATA[
+		SELECT COUNT(*) AS count
+		  FROM base_user
+		;
+	]]></sql>
+</root>

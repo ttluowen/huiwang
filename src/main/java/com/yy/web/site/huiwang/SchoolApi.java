@@ -86,10 +86,13 @@ public class SchoolApi extends Responsor {
 		MapValue data = getPostParams();
 		String name = data.getString("name");
 		String historyNames = data.getString("historyNames");
+		int headSchoolId = data.getIntValue("headSchoolId");
 		String type = data.getString("type");
 		String province = data.getString("province");
 		String area = data.getString("area");
 		int cityId = data.getIntValue("cityId");
+		String address = data.getString("address");
+		String phone = data.getString("phone");
 		String banner = data.getString("banner");
 		int creator = getUserId();
 		int status = data.getIntValue("status");
@@ -97,10 +100,13 @@ public class SchoolApi extends Responsor {
 		
 		data.put("name", name);
 		data.put("historyNames", historyNames);
+		data.put("headSchoolId", headSchoolId);
 		data.put("type", type);
 		data.put("province", province);
 		data.put("area", area);
 		data.put("cityId", cityId);
+		data.put("address", address);
+		data.put("phone", phone);
 		data.put("banner", banner);
 		data.put("creator", creator);
 		data.put("status", status);
@@ -180,6 +186,7 @@ public class SchoolApi extends Responsor {
 		sqlParams.put("type", getStringParam("type"));
 		sqlParams.put("cityId", getIntParam("cityId"));
 		sqlParams.put("province", getStringParam("province"));
+		sqlParams.put("name", getStringParam("name"));
 		sqlParams.put("headSchoolId", -1);
 		
 		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", sqlParams);
@@ -198,6 +205,7 @@ public class SchoolApi extends Responsor {
 		sqlParams.put("type", getStringParam("type"));
 		sqlParams.put("cityId", getIntParam("cityId"));
 		sqlParams.put("province", getStringParam("province"));
+		sqlParams.put("name", getStringParam("name"));
 		sqlParams.put("headSchoolId", getIntParam("headSchoolId"));
 		
 		
