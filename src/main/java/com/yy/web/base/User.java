@@ -1131,6 +1131,47 @@ public class User extends Responsor {
 	
 	
 	/**
+	 * 修改用户信息。
+	 * 
+	 * @return
+	 */
+	@ApiAction(login = true)
+	public StatuscodeMap modifySelf() {
+		
+		int userId = getUserId();
+		MapValue params = getPostParams();
+		params.put("userId", userId);
+	
+		
+		return modify(params);
+	}
+
+
+	/**
+	 * 修改用户信息。
+	 * 
+	 * @return
+	 */
+	@ApiAction(login = true)
+	public StatuscodeMap modify() {
+		
+		return modify(getPostParams());
+	}
+
+
+	/**
+	 * 修改用户资料。
+	 * 
+	 * @param params
+	 * @return
+	 */
+	public StatuscodeMap modify(MapValue params) {
+		
+		return dbUpdateMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "modifyUser", params);
+	}
+
+
+	/**
 	 * 修改密码。
 	 * 
 	 * @return
@@ -1182,6 +1223,23 @@ public class User extends Responsor {
 		
 		
 		return sm;
+	}
+	
+	
+	/**
+	 * 修改用户头像。
+	 * @return
+	 */
+	@ApiAction(login = true)
+	public StatuscodeMap modifyAvatar() {
+		
+		String avatar = getStringParam("avatar");
+		MapValue sqlParams = new MapValue();
+		sqlParams.put("avatar", avatar);
+		sqlParams.put("userId", getUserId());
+		
+		
+		return dbUpdateMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "modifyAvatar", sqlParams);
 	}
 	
 	

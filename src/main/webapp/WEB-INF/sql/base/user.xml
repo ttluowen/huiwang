@@ -208,4 +208,28 @@
 			'$expireDatetime'
 		);
 	]]></sql>
+	
+	
+	<!-- 修改用户 -->
+	<sql id="modifyUser"><![CDATA[
+		UPDATE user
+		   SET nickname = '$nickname',
+		   	   name = '$!name',
+		   	   gender = $gender,
+		   	   birthday = #if($birthday)'$birthday'#{else}NULL#end,
+		   	   mobile = '$!mobile',
+		   	   address = '$!address',
+		   	   status = $status
+		 WHERE userId = $userId
+		;
+	]]></sql>
+	
+	
+	<!-- 修改用户头像 -->
+	<sql id="modifyAvatar"><![CDATA[
+		UPDATE user
+		   SET avatar = '$!avatar'
+		 WHERE userId = $userId
+		;
+	]]></sql>
 </root>
