@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.yy.statuscode.StatuscodeMap;
+import com.yy.util.map.MapValue;
 import com.yy.web.Dim;
 import com.yy.web.Responsor;
 import com.yy.web.request.annotation.ApiAction;
@@ -38,7 +39,10 @@ public class TotalApi extends Responsor {
 	@ApiAction
 	public StatuscodeMap schoolCount() {
 		
-		return dbSelectOneMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "schoolCount", null);
+		MapValue sqlParams = new MapValue();
+		sqlParams.put("type", getStringParam("type"));
+		
+		return dbSelectOneMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "schoolCount", sqlParams);
 	}
 
 	
@@ -50,7 +54,10 @@ public class TotalApi extends Responsor {
 	@ApiAction
 	public StatuscodeMap schoolUserCount() {
 		
-		return dbSelectOneMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "schoolUserCount", null);
+		MapValue sqlParams = new MapValue();
+		sqlParams.put("schoolId", getIntParam("schoolId"));
+		
+		return dbSelectOneMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "schoolUserCount", sqlParams);
 	}
 
 	
@@ -62,12 +69,15 @@ public class TotalApi extends Responsor {
 	@ApiAction
 	public StatuscodeMap classUserCount() {
 		
-		return dbSelectOneMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "classUserCount", null);
+		MapValue sqlParams = new MapValue();
+		sqlParams.put("classId", getIntParam("classId"));
+		
+		return dbSelectOneMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "classUserCount", sqlParams);
 	}
 	
 	
 	/**
-	 * 加入人数统计。
+	 * 加入人数总计。
 	 * 
 	 * @return
 	 */
