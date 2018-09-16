@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.yy.statuscode.Statuscode;
 import com.yy.statuscode.StatuscodeMap;
-import com.yy.util.number.NumberUtil;
-import com.yy.util.string.StringUtil;
+import com.yy.util.NumberUtil;
+import com.yy.util.StringUtil;
 import com.yy.web.base.visit.Visit;
 import com.yy.web.config.SystemConfig;
 import com.yy.web.filter.WebFilter;

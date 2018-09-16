@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.yy.statuscode.Statuscode;
 import com.yy.statuscode.StatuscodeMap;
-import com.yy.util.map.MapValue;
+import com.yy.util.MapValue;
 import com.yy.web.Dim;
 import com.yy.web.Responsor;
 import com.yy.web.request.annotation.ApiAction;

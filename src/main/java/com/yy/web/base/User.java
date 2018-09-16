@@ -16,14 +16,14 @@ import com.yy.encrypt.MD5;
 import com.yy.log.Logger;
 import com.yy.statuscode.Statuscode;
 import com.yy.statuscode.StatuscodeMap;
-import com.yy.util.date.DateUtil;
-import com.yy.util.file.FileUtil;
-import com.yy.util.http.HttpUtil;
-import com.yy.util.map.MapValue;
-import com.yy.util.number.NumberUtil;
-import com.yy.util.regexp.RegexpUtil;
-import com.yy.util.string.StringUtil;
-import com.yy.util.template.TemplateUtil;
+import com.yy.util.DateUtil;
+import com.yy.util.FileUtil;
+import com.yy.util.HttpUtil;
+import com.yy.util.MapValue;
+import com.yy.util.NumberUtil;
+import com.yy.util.RegexpUtil;
+import com.yy.util.StringUtil;
+import com.yy.util.TemplateUtil;
 import com.yy.web.Dim;
 import com.yy.web.Responsor;
 import com.yy.web.base.visit.Visit;
@@ -798,7 +798,7 @@ public class User extends Responsor {
 			sm.setDescription("密码格式不正确");
 			return sm;
 		}
-		if (!RegexpUtil.isEmail(email)) {
+		if (!RegexpUtil.checkEmail(email)) {
 			sm.setDescription("邮箱格式不正确");
 			return sm;
 		}
@@ -1077,7 +1077,7 @@ public class User extends Responsor {
 			sm.setDescription("用户名格式不正确");
 			return sm;
 		}
-		if (!RegexpUtil.isEmail(email)) {
+		if (!RegexpUtil.checkEmail(email)) {
 			sm.setDescription("邮箱格式不正确");
 			return sm;
 		}

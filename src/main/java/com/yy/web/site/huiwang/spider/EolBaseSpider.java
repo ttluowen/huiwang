@@ -11,10 +11,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import com.yy.log.Logger;
-import com.yy.util.file.FileUtil;
-import com.yy.util.map.MapValue;
-import com.yy.util.number.NumberUtil;
-import com.yy.util.string.StringUtil;
+import com.yy.util.FileUtil;
+import com.yy.util.MapValue;
+import com.yy.util.NumberUtil;
+import com.yy.util.StringUtil;
 import com.yy.web.config.SystemConfig;
 
 public class EolBaseSpider {

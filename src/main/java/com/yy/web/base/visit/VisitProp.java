@@ -2,8 +2,8 @@ package com.yy.web.base.visit;
 
 import java.util.Locale;
 
-import com.yy.util.map.MapValue;
-import com.yy.util.string.StringUtil;
+import com.yy.util.MapValue;
+import com.yy.util.StringUtil;
 
 public class VisitProp {
 

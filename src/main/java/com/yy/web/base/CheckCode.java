@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 import com.yy.log.Logger;
 import com.yy.statuscode.Statuscode;
 import com.yy.statuscode.StatuscodeTypeMap;
-import com.yy.util.string.StringUtil;
+import com.yy.util.StringUtil;
 import com.yy.web.ResponseFormater;
 import com.yy.web.Responsor;
 import com.yy.web.request.annotation.ApiAction;

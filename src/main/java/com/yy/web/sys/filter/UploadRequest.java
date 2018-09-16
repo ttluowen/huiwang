@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 
 import com.yy.statuscode.StatuscodeMap;
-import com.yy.util.number.NumberUtil;
-import com.yy.util.string.StringUtil;
+import com.yy.util.NumberUtil;
+import com.yy.util.StringUtil;
 import com.yy.web.config.SystemConfig;
 import com.yy.web.config.WebHosts;
 import com.yy.web.request.handler.UploadRequestHandler;

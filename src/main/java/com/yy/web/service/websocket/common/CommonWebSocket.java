@@ -17,7 +17,7 @@ import com.yy.callback.CallbackInterface;
 import com.yy.log.Logger;
 import com.yy.statuscode.Statuscode;
 import com.yy.statuscode.StatuscodeTypeMap;
-import com.yy.util.string.StringUtil;
+import com.yy.util.StringUtil;
 import com.yy.web.service.websocket.Actions;
 import com.yy.web.service.websocket.common.connection.Connection;
 import com.yy.web.service.websocket.common.connection.ConnectionStruct;

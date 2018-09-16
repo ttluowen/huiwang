@@ -13,9 +13,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 
 import com.yy.log.Logger;
-import com.yy.util.streamreader.BufferedInReader;
-import com.yy.util.string.StringUtil;
-import com.yy.util.url.UrlUtil;
+import com.yy.read.BufferedInReader;
+import com.yy.util.StringUtil;
+import com.yy.util.UrlUtil;
 
 /**
  * 蜘蛛爬虫。

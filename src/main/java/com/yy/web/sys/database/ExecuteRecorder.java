@@ -5,7 +5,7 @@ import com.yy.database.DatabaseSql;
 import com.yy.database.recoder.ExecuteRecorderInterface;
 import com.yy.database.recoder.ExecuteStruct;
 import com.yy.log.Logger;
-import com.yy.util.map.MapValue;
+import com.yy.util.MapValue;
 import com.yy.web.Dim;
 import com.yy.web.filereader.SqlFileReader;
 

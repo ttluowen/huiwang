@@ -8,7 +8,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.yy.util.number.NumberUtil;
+import com.yy.util.NumberUtil;
 import com.yy.web.config.SystemConfig;
 import com.yy.web.request.handler.AssetsRequestHandler;
 

@@ -10,12 +10,12 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.yy.statuscode.StatuscodeMap;
 import com.yy.statuscode.StatuscodeTypeMap;
-import com.yy.util.date.DateUtil;
-import com.yy.util.map.MapValue;
+import com.yy.util.DateUtil;
+import com.yy.util.MapValue;
 import com.yy.web.Dim;
 import com.yy.web.Responsor;
 import com.yy.web.request.annotation.ApiAction;
-import com.yy.web.request.annotation.MethodEnum;
+import com.yy.web.request.annotation.Method;
 import com.yy.web.site.huiwang.struct.SchoolStruct;
 
 /**
@@ -121,7 +121,7 @@ public class SchoolApi extends Responsor {
 	 * 
 	 * @return
 	 */
-	@ApiAction(login = true, methods = {MethodEnum.POST})
+	@ApiAction(login = true, methods = {Method.POST})
 	public StatuscodeMap create() {
 
 		MapValue data = getCreateModifyData();
@@ -151,7 +151,7 @@ public class SchoolApi extends Responsor {
 	 * 
 	 * @return
 	 */
-	@ApiAction(login = true, methods = {MethodEnum.POST})
+	@ApiAction(login = true, methods = {Method.POST})
 	public StatuscodeMap modify() {
 	
 		MapValue data = getCreateModifyData();

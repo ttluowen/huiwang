@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.yy.log.Logger;
-import com.yy.util.map.MapValue;
-import com.yy.util.string.StringUtil;
+import com.yy.util.MapValue;
+import com.yy.util.StringUtil;
 import com.yy.web.base.DBConfig;
 import com.yy.web.request.pagadata.PageDataAbstract;
 
