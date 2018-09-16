@@ -110,4 +110,15 @@
 			NULL, $classId, $userId, '$datetime'
 		);
 	]]></sql>
+	
+	
+	<sql id="detail"><![CDATA[
+		SELECT c.*,
+			   s.name AS schoolName
+		  FROM `class` AS c
+		  LEFT JOIN `school` AS s
+		    ON c.schoolId = s.schoolId
+		 WHERE classId = $classId
+		;
+	]]></sql>
 </root>

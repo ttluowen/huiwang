@@ -227,6 +227,18 @@ public class SchoolApi extends Responsor {
 		
 		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", sqlParams);
 	}
+	
+	
+	/**
+	 * 详情。
+	 * 
+	 * @return
+	 */
+	@ApiAction
+	public StatuscodeMap detail() {
+		
+		return dbSelectOneMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "detail", getParams());
+	}
 }
 
 

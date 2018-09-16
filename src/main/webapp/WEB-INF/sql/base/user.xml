@@ -59,7 +59,8 @@
 
 	<!-- 查询用户详情。 -->
 	<sql id="getProfile"><![CDATA[
-		SELECT userId, username, nickname, avatar, gender, email, mobile, lastLoginDatetime, createDatetime, status,
+		SELECT userId, username, nickname, avatar, gender, email, province, 
+			   city, address, mobile, lastLoginDatetime, createDatetime, status,
 			   DATE_FORMAT(createDatetime,'%Y-%m-%d') AS createDate
 		  FROM base_user
 		 WHERE 1 = 1

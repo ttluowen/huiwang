@@ -74,4 +74,12 @@
 		   AND creator = $creator
 		;
 	]]></sql>
+	
+	
+	<sql id="detail"><![CDATA[
+		SELECT *
+		  FROM `school`
+		 WHERE schoolId = $schoolId
+		;
+	]]></sql>
 </root>

@@ -248,4 +248,16 @@ public class ClassApi extends Responsor {
 		
 		return dbUpdateMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "join", data);
 	}
+	
+	
+	/**
+	 * 详情。
+	 * 
+	 * @return
+	 */
+	@ApiAction
+	public StatuscodeMap detail() {
+		
+		return dbSelectOneMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "detail", getParams());
+	}
 }
