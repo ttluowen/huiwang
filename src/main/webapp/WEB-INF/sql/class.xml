@@ -73,12 +73,12 @@
 	
 	
 	<sql id="getClassUsers"><![CDATA[
-		SELECT userId, nickname, avatar, gender
+		SELECT userId, nickname, avatar, gender, province, city
 		  FROM base_user
 		 WHERE userId IN (
 		 			SELECT userId
 		 			  FROM class_user
-		 			 WHERE classId = $classId
+		 			 WHERE classId IN($classId)
 				)
 		;
 	]]></sql>

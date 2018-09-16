@@ -218,6 +218,8 @@
 		   	   gender = $gender,
 		   	   birthday = #if($birthday)'$birthday'#{else}NULL#end,
 		   	   mobile = '$!mobile',
+		   	   province = '$!province',
+		   	   city = $city,
 		   	   address = '$!address',
 		   	   status = $status
 		 WHERE userId = $userId
@@ -232,4 +234,16 @@
 		 WHERE userId = $userId
 		;
 	]]></sql>
+	
+	
+	<!-- 修改用户位置 -->
+	<sql id="modifyLocation"><![CDATA[
+		UPDATE user
+		   SET province = '$!province',
+		   	   city = $city,
+		   	   address = '$!address'
+		 WHERE userId = $userId
+		;
+	]]></sql>
+	
 </root>

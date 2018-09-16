@@ -15,6 +15,7 @@ public class ClassStruct {
 	private int joined;
 	private Date datetime;
 	private int status;
+	public int userCount;
 
 	public int getClassId() {
 		return classId;
@@ -102,5 +103,13 @@ public class ClassStruct {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public int getUserCount() {
+		return userCount;
+	}
+
+	public void setUserCount(int userCount) {
+		this.userCount = userCount;
 	}
 }

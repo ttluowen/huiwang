@@ -15,18 +15,29 @@
 	]]></sql>
 	
 	
+	<sql id="schoolClassCount"><![CDATA[
+		SELECT schoolId, COUNT(*) AS count
+		  FROM `class`
+		 WHERE schoolId IN($schoolId)
+		 GROUP BY schoolId
+		;
+	]]></sql>
+	
+	
 	<sql id="schoolUserCount"><![CDATA[
-		SELECT COUNT(*) AS count
+		SELECT schoolId, COUNT(*) AS count
 		  FROM class_user
-		 WHERE schoolId = $schoolId
+		 WHERE schoolId IN($schoolId)
+		 GROUP BY schoolId
 		;
 	]]></sql>
 	
 	
 	<sql id="classUserCount"><![CDATA[
-		SELECT COUNT(*) AS count
+		SELECT classId, COUNT(*) AS count
 		  FROM class_user
-		 WHERE classId = $classId
+		 WHERE classId IN($classId)
+		 GROUP BY classId
 		;
 	]]></sql>
 	

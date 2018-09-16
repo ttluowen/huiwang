@@ -6,8 +6,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.helper.StringUtil;
 
+import com.yy.statuscode.Statuscode;
 import com.yy.statuscode.StatuscodeMap;
 import com.yy.statuscode.StatuscodeTypeMap;
 import com.yy.util.date.DateUtil;
@@ -73,12 +75,28 @@ public class ClassApi extends Responsor {
 	@ApiAction
 	public StatuscodeMap getClassUsers() {
 
-		int classId = getIntParam("classId");
+		StatuscodeMap sm = new StatuscodeMap();
+		sm.setCode(Statuscode.SUCCESS);
+		sm.setResult(getClassUsers(getIntParams("classId")));
+		
+		
+		return sm;
+	}
+	
+	
+	/**
+	 * 获取已加入班级的人员列表。
+	 * 
+	 * @return
+	 */
+	@ApiAction
+	public List<MapValue> getClassUsers(int[] classIds) {
+		
 		MapValue sqlParams = new MapValue();
-		sqlParams.put("classId", classId);
-		
-		
-		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "getClassUsers", sqlParams);
+		sqlParams.put("classId", StringUtils.join(classIds, ','));
+
+
+		return dbSelect(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "getClassUsers", sqlParams);
 	}
 	
 	

@@ -1242,6 +1242,29 @@ public class User extends Responsor {
 		return dbUpdateMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "modifyAvatar", sqlParams);
 	}
 	
+
+	/**
+	 * 修改用户位置信息。
+	 * 
+	 * @return
+	 */
+	@ApiAction(login = true)
+	public StatuscodeMap modifyLocation() {
+		
+		String province = getStringParam("province");
+		int city = getIntParam("city");
+		String address = getStringParam("address");
+		
+		MapValue sqlParams = new MapValue();
+		sqlParams.put("province", province);
+		sqlParams.put("city", city);
+		sqlParams.put("address", address);
+		sqlParams.put("userId", getUserId());
+		
+		
+		return dbUpdateMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "modifyLocation", sqlParams);
+	}
+	
 	
 	/**
 	 * 发送重置密码邮件。
