@@ -171,8 +171,11 @@ public class ClassApi extends Responsor {
 	@ApiAction(login = true)
 	public StatuscodeMap create() {
 
+		int userId = getUserId();
+		
 		MapValue data = getCreateModifyData();
 		data.put("datetime", DateUtil.get(1));
+		data.put("creator", userId);
 		
 		
 		// 检查该学校是否已创建。
@@ -180,6 +183,7 @@ public class ClassApi extends Responsor {
 		sqlParams.put("name", data.getString("name"));
 		sqlParams.put("type", data.getIntValue("type"));
 		sqlParams.put("cityId", data.getIntValue("cityId"));
+		sqlParams.put("userId", userId);
 
 		StatuscodeMap sm = new StatuscodeMap();
 		MapValue exist = dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", sqlParams);
@@ -189,7 +193,15 @@ public class ClassApi extends Responsor {
 		}
 
 
-		return dbInsertAndReturnIdMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "create", data);
+		sm = dbInsertAndReturnIdMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "create", data);
+		if (sm.getCode() == Statuscode.SUCCESS) {
+			int classId = sm.getResultAsInt();
+
+			join(classId, userId);
+		}
+			
+
+		return sm;
 	}
 	
 
@@ -231,6 +243,19 @@ public class ClassApi extends Responsor {
 
 		int classId = getIntParam("classId");
 		int userId = getUserId();
+		
+		return join(classId, userId);
+	}
+	
+	
+	/**
+	 * 加入班级操作。
+	 * 
+	 * @param classId
+	 * @param userId
+	 * @return
+	 */
+	public StatuscodeMap join(int classId, int userId) {
 		
 		MapValue data = new MapValue();
 		data.put("classId", classId);

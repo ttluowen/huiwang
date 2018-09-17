@@ -247,4 +247,45 @@
 		;
 	]]></sql>
 	
+	
+	<!-- 用户状态信息。 -->
+	<sql id="createUserStatus"><![CDATA[
+		INSERT INTO base_user_status (
+			userId, loginDatetime, checkinDatetime
+		)
+		VALUES (
+			$userId, NULL, NULL
+		);
+	]]></sql>
+	
+	<!-- 用户状态信息。 -->
+	<sql id="getUserStatus"><![CDATA[
+		SELECT *
+		  FROM base_user_status
+		 WHERE userId = $userId
+		;
+	]]></sql>
+	
+	
+	<!-- 更新签到时间 -->
+	<sql id="updateCheckinDatetime"><![CDATA[
+		UPDATE base_user_status
+		   SET checkinDatetime = '$datetime'
+		 WHERE userId = $userId
+		;
+	]]></sql>
+	
+	
+	<!-- 签到 -->
+	<sql id="checkin"><![CDATA[
+		INSERT INTO base_checkin (
+			id, userId, datetime
+		)
+		VALUES (
+			NULL, $userId, '$!datetime'
+		);
+	]]></sql>
+	
+	
+	
 </root>

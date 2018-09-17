@@ -1365,4 +1365,96 @@ public class User extends Responsor {
 		
 		return result;
 	}
+	
+	
+	/**
+	 * 创建用户状态记录。
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public boolean createUserStatus(int userId) {
+		
+		MapValue sqlParams = new MapValue();
+		sqlParams.put("userId", userId);
+		
+		
+		return dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "createUserStatus", sqlParams) > 0;
+	}
+	
+	
+	/**
+	 * 获取用户状态数据。
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public UserStatusStruct getUserStatus(int userId) {
+
+		MapValue sqlParams = new MapValue();
+		sqlParams.put("userId", userId);
+		
+		
+		return dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "getUserStatus", sqlParams, null, UserStatusStruct.class);
+	}
+	
+	
+	/**
+	 * 签到操作。
+	 * 
+	 * @return
+	 */
+	@ApiAction(login = true)
+	public StatuscodeMap checkin() {
+		
+		int userId = getUserId();
+		boolean checked = false;
+		boolean hasRecord = false;
+		
+		
+		// 查询上次签到时间。
+		UserStatusStruct userStatus = getUserStatus(userId);
+		if (userStatus != null && userStatus.getUserId() == userId) {
+			hasRecord = true;
+			Date checkinDatetime = userStatus.getCheckinDatetime();
+			
+			if (checkinDatetime != null) {
+				Calendar today = Calendar.getInstance();
+				today.set(Calendar.HOUR, 0);
+				today.set(Calendar.MINUTE, 0);
+				today.set(Calendar.SECOND, 0);
+				today.set(Calendar.MILLISECOND, 0);
+
+				if (today.getTimeInMillis() < checkinDatetime.getTime()) {
+					checked = true;
+				}
+			}
+		}
+		
+		
+		StatuscodeMap sm = new StatuscodeMap();
+		if (checked) {
+			sm.setDescription("今天已签到过了");
+		} else {
+			MapValue sqlParams = new MapValue();
+			sqlParams.put("userId", userId);
+			sqlParams.put("datetime", DateUtil.get(1));
+
+			// 签到操作。
+			sm = dbUpdateMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "checkin", sqlParams);
+			
+			
+			// 更新签到时间。
+			if (sm.getCode() == Statuscode.SUCCESS) {
+				if (!hasRecord) {
+					createUserStatus(userId);
+				}
+
+				dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "updateCheckinDatetime", sqlParams);
+			}
+		}
+
+
+		return sm;
+	}
 }

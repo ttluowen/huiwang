@@ -8,7 +8,7 @@ public class ClassStruct {
 	private String name;
 	private int schoolId;
 	private String schoolName;
-	private String year;
+	private int year;
 	private String field;
 	private String banner;
 	private int creator;
@@ -49,11 +49,11 @@ public class ClassStruct {
 		this.schoolName = schoolName;
 	}
 
-	public String getYear() {
+	public int getYear() {
 		return year;
 	}
 
-	public void setYear(String year) {
+	public void setYear(int year) {
 		this.year = year;
 	}
 
