@@ -43,7 +43,7 @@
 			banner, description, creator, datetime, status
 		)
 		VALUES (
-			NULL, '$name', '$!historyNames', $headSchoolId, '$!type',
+			$nextId, '$name', '$!historyNames', $headSchoolId, '$!type',
 			'$!province', '$!area', $cityId, '$!address', '$!phone',
 			'$!banner', '$!description', $creator, '$datetime', $status
 		);

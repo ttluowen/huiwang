@@ -20,14 +20,17 @@
 		#if ($name && $name != '')
 		   AND c.name LIKE '%${name}%'
 		#end
+		#if ($year && $year != 0)
+		   AND c.year = $year
+		#end
+		#if ($field && $field != '')
+		   AND c.field = '$field'
+		#end
 		#if ($schoolId && $schoolId != 0)
 		   AND s.schoolId = $schoolId
 		#end
 		#if ($schoolIds && $schoolIds != '')
 		   AND s.schoolId IN ($schoolIds)
-		#end
-		#if ($year && $year != 0)
-		   AND s.year = $year
 		#end
 		#if ($type && $type != '')
 		   AND s.type = '$type'
@@ -43,7 +46,7 @@
 			banner, creator, joined, datetime, status
 		)
 		VALUES (
-			NULL, '$name', $schoolId, '$year', '$!field',
+			$nextId, '$name', $schoolId, '$year', '$!field',
 			'$!banner', $creator, 0, '$datetime', $status
 		);
 	]]></sql>
@@ -96,7 +99,7 @@
 		SELECT 1
 		  FROM class_user
 		 WHERE userId = $userId
-		#if ($classId != 0)
+		#if ($classId && $classId != 0)
 		   AND classId = $classId
 		#end
 		;
@@ -104,10 +107,10 @@
 	
 	<sql id="join"><![CDATA[
 		INSERT INTO `class_user` (
-			id, classId, userId, datetime
+			id, schoolId, classId, userId, datetime
 		)
 		VALUES (
-			NULL, $classId, $userId, '$datetime'
+			NULL, $schoolId, $classId, $userId, '$datetime'
 		);
 	]]></sql>
 	

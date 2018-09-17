@@ -176,24 +176,25 @@ public class ClassApi extends Responsor {
 		MapValue data = getCreateModifyData();
 		data.put("datetime", DateUtil.get(1));
 		data.put("creator", userId);
-		
-		
+
+
 		// 检查该学校是否已创建。
 		MapValue sqlParams = new MapValue();
 		sqlParams.put("name", data.getString("name"));
-		sqlParams.put("type", data.getIntValue("type"));
-		sqlParams.put("cityId", data.getIntValue("cityId"));
+		sqlParams.put("schoolId", data.getIntValue("schoolId"));
+		sqlParams.put("year", data.getIntValue("year"));
+		sqlParams.put("field", data.getString("field"));
 		sqlParams.put("userId", userId);
 
 		StatuscodeMap sm = new StatuscodeMap();
 		MapValue exist = dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", sqlParams);
 		if (exist != null && !exist.isEmpty()) {
-			sm.setDescription("该学校已存在");
+			sm.setDescription("该班级已存在");
 			return sm;
 		}
 
 
-		sm = dbInsertAndReturnIdMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "create", data);
+		sm = dbInsertAndReturnIdMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "create", data, "class", "classId");
 		if (sm.getCode() == Statuscode.SUCCESS) {
 			int classId = sm.getResultAsInt();
 
@@ -257,16 +258,27 @@ public class ClassApi extends Responsor {
 	 */
 	public StatuscodeMap join(int classId, int userId) {
 		
+		StatuscodeMap sm = new StatuscodeMap();
+		
+		
 		MapValue data = new MapValue();
 		data.put("classId", classId);
 		data.put("userId", userId);
+		data.put("datetime", DateUtil.get(1));
 		
 		
 		MapValue joined = dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "queryUserJoined", data);
 		if (joined != null) {
-			StatuscodeMap sm = new StatuscodeMap();
 			sm.setDescription("已经加入过了");
-			
+			return sm;
+		}
+		
+		
+		ClassStruct detail = detail(classId);
+		if (detail != null) {
+			data.put("schoolId", detail.getSchoolId());
+		} else {
+			sm.setResult("班级" + classId + "不存在");
 			return sm;
 		}
 
@@ -284,5 +296,21 @@ public class ClassApi extends Responsor {
 	public StatuscodeMap detail() {
 		
 		return dbSelectOneMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "detail", getParams());
+	}
+	
+	
+	/**
+	 * 详情。
+	 * 
+	 * @param classId
+	 * @return
+	 */
+	public ClassStruct detail(int classId) {
+		
+		MapValue sqlParams = new MapValue();
+		sqlParams.put("classId", classId);
+		
+		
+		return dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "detail", sqlParams, null, ClassStruct.class);
 	}
 }

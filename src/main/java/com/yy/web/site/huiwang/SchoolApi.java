@@ -142,7 +142,7 @@ public class SchoolApi extends Responsor {
 		}
 
 
-		return dbInsertAndReturnIdMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "create", data);
+		return dbInsertAndReturnIdMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "create", data, "school", "schoolId");
 	}
 
 
@@ -238,6 +238,22 @@ public class SchoolApi extends Responsor {
 	public StatuscodeMap detail() {
 		
 		return dbSelectOneMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "detail", getParams());
+	}
+	
+	
+	/**
+	 * 详情。
+	 * 
+	 * @param schoolId
+	 * @return
+	 */
+	public SchoolStruct detail(int schoolId) {
+		
+		MapValue sqlParams = new MapValue();
+		sqlParams.put("schoolId", schoolId);
+		
+		
+		return dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "detail", sqlParams, null, SchoolStruct.class);
 	}
 }
 

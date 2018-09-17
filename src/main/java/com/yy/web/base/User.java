@@ -859,7 +859,7 @@ public class User extends Responsor {
 		data.put("status", 1);
 
 
-		return dbInsertAndReturnId(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "regist", data);
+		return dbInsertAndReturnId(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "regist", data, "base_user", "userId");
 	}
 
 

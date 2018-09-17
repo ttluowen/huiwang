@@ -170,7 +170,7 @@ public class TotalApi extends Responsor {
 	@ApiAction
 	public StatuscodeMap userCount() {
 		
-		return dbSelectOneMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "userCount", null);
+		return dbSelectOneMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "userCount", new MapValue());
 	}
 	
 

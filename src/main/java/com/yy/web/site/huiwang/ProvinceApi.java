@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.yy.statuscode.StatuscodeMap;
+import com.yy.util.MapValue;
 import com.yy.web.Dim;
 import com.yy.web.Responsor;
 import com.yy.web.request.annotation.ApiAction;
@@ -39,6 +40,6 @@ public class ProvinceApi extends Responsor {
 	@ApiAction
 	public StatuscodeMap list() {
 		
-		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", null);
+		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", new MapValue());
 	}
 }
