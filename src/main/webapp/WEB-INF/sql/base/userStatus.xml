@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<!-- 命名空间。 -->
+	<namespace>base.user.status</namespace>
+
+
+	<sql id="query"><![CDATA[
+		SELECT *
+		  FROM base_user_status
+		 WHERE userId = $userId
+		;
+	]]></sql>
+	
+	
+	<sql id="create"><![CDATA[
+		INSERT INTO base_user_status(
+			userId
+		)
+		VALUES (
+			$userId
+		);
+	]]></sql>
+	
+	
+	<sql id="update"><![CDATA[
+		UPDATE base_user_status
+		   SET
+		#if ($isNumber && $isNumber == true)
+		   `$column` = $value
+		#else
+			`$column` = '$value'
+		#end
+		 WHERE userId = $userId
+		;
+	]]></sql>
+</root>

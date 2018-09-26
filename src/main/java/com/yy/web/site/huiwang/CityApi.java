@@ -32,6 +32,8 @@ public class CityApi extends Responsor {
 	
 	public static final String SQL_NAMESPACE = "base.city.";
 	
+	private static List<CityStruct> cityList;
+	
 
 	/**
 	 * 构造函数。
@@ -81,7 +83,17 @@ public class CityApi extends Responsor {
 	 */
 	protected StatuscodeTypeMap<List<CityStruct>> list(MapValue params) {
 		
-		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", params, null, CityStruct.class);
+		if (cityList == null) {
+			cityList = dbSelect(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", params, null, CityStruct.class);
+		}
+
+
+		StatuscodeTypeMap<List<CityStruct>> sm = new StatuscodeTypeMap<>();
+		sm.setCode(Statuscode.SUCCESS);
+		sm.setResult(cityList);
+		
+		
+		return sm;
 	}
 	
 	
@@ -94,7 +106,7 @@ public class CityApi extends Responsor {
 	public StatuscodeMap list() {
 		
 		// 查询所有城市列表。
-		List<CityStruct> list = dbSelect(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", getParams(), null, CityStruct.class);
+		List<CityStruct> list = list(getParams()).getResult();
 		List<String> provinceList = new ArrayList<>();
 		Map<String, List<CityItemStruct>> cityMap = new HashMap<>();
 		

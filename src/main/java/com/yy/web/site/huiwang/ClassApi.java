@@ -18,6 +18,7 @@ import com.yy.web.Dim;
 import com.yy.web.Responsor;
 import com.yy.web.request.annotation.ApiAction;
 import com.yy.web.site.huiwang.struct.ClassStruct;
+import com.yy.web.site.huiwang.struct.PointRuleStruct;
 
 /**
  * 班级管理类。
@@ -198,7 +199,13 @@ public class ClassApi extends Responsor {
 		if (sm.getCode() == Statuscode.SUCCESS) {
 			int classId = sm.getResultAsInt();
 
+			// 自动加入班级。
 			join(classId, userId);
+			
+			
+			// 增加积分。
+			PointRuleStruct pointRule = PointRule.get(PointRule.ACTION_CREATE_CLASS);
+			PointApi.add(getUserId(), pointRule.getAction(), pointRule.getValue(), pointRule.getDescription());
 		}
 			
 
@@ -283,7 +290,15 @@ public class ClassApi extends Responsor {
 		}
 
 		
-		return dbUpdateMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "join", data);
+		sm = dbUpdateMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "join", data);
+		if (sm.getCode() == Statuscode.SUCCESS) {
+			// 增加积分。
+			PointRuleStruct pointRule = PointRule.get(PointRule.ACTION_JOIN_CLASS);
+			PointApi.add(getUserId(), pointRule.getAction(), pointRule.getValue(), pointRule.getDescription());
+		}
+		
+		
+		return sm;
 	}
 	
 	

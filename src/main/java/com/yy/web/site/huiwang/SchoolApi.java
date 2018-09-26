@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.yy.statuscode.Statuscode;
 import com.yy.statuscode.StatuscodeMap;
 import com.yy.statuscode.StatuscodeTypeMap;
 import com.yy.util.DateUtil;
@@ -16,6 +17,8 @@ import com.yy.web.Dim;
 import com.yy.web.Responsor;
 import com.yy.web.request.annotation.ApiAction;
 import com.yy.web.request.annotation.Method;
+import com.yy.web.resultset.PageListResultStruct;
+import com.yy.web.site.huiwang.struct.PointRuleStruct;
 import com.yy.web.site.huiwang.struct.SchoolStruct;
 
 /**
@@ -142,7 +145,15 @@ public class SchoolApi extends Responsor {
 		}
 
 
-		return dbInsertAndReturnIdMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "create", data, "school", "schoolId");
+		sm = dbInsertAndReturnIdMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "create", data, "school", "schoolId");
+		if (sm.getCode() == Statuscode.SUCCESS) {
+			// 增加积分。
+			PointRuleStruct pointRule = PointRule.get(PointRule.ACTION_CREATE_SCHOOL);
+			PointApi.add(getUserId(), pointRule.getAction(), pointRule.getValue(), pointRule.getDescription());
+		}
+		
+		
+		return sm;
 	}
 
 
@@ -180,16 +191,29 @@ public class SchoolApi extends Responsor {
 	 * @return
 	 */
 	@ApiAction
-	public StatuscodeMap list() {
+	public StatuscodeTypeMap<PageListResultStruct> list() {
 		
 		MapValue sqlParams = new MapValue();
+		
+		int page = getIntParam("page");
+		if (page < 1) {
+			page = 1;
+		}
+		int pageSize = Dim.PAGE_SIZE;
+		int beginIndex = (page - 1) * pageSize;
+		
+		sqlParams.put("beginIndex", beginIndex);
+		sqlParams.put("pageSize", pageSize);
 		sqlParams.put("type", getStringParam("type"));
 		sqlParams.put("cityId", getIntParam("cityId"));
 		sqlParams.put("province", getStringParam("province"));
 		sqlParams.put("name", getStringParam("name"));
 		sqlParams.put("headSchoolId", -1);
-		
-		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", sqlParams);
+
+		return dbSelectPageMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list",
+				SQL_NAMESPACE + "listCount", null,
+				pageSize, page,
+				sqlParams, null);
 	}
 	
 
@@ -256,5 +280,3 @@ public class SchoolApi extends Responsor {
 		return dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "detail", sqlParams, null, SchoolStruct.class);
 	}
 }
-
-

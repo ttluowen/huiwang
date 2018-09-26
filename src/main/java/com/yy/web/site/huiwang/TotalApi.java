@@ -17,6 +17,7 @@ import com.yy.util.ArrayUtil;
 import com.yy.util.MapValue;
 import com.yy.web.Dim;
 import com.yy.web.Responsor;
+import com.yy.web.base.UserStatus;
 import com.yy.web.request.annotation.ApiAction;
 import com.yy.web.site.huiwang.struct.ClassStruct;
 
@@ -179,8 +180,10 @@ public class TotalApi extends Responsor {
 	 * 
 	 * @return
 	 */
-	@ApiAction
+	@ApiAction (login = true)
 	public StatuscodeMap myTotal() {
+		
+		int userId = getUserId();
 		
 		MapValue result = new MapValue();
 		MapValue count = new MapValue();
@@ -195,6 +198,7 @@ public class TotalApi extends Responsor {
 		if (classSm.getCode() == Statuscode.SUCCESS) {
 			List<ClassStruct> list = classSm.getResult();
 			count.put("classCount", list.size());
+			count.put("point", new UserStatus().get(userId));
 			result.put("classList", list);
 			
 			

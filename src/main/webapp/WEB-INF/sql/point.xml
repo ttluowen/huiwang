@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<!-- 命名空间。 -->
+	<namespace>point</namespace>
+
+
+	<sql id="query"><![CDATA[
+		SELECT point
+		  FROM base_user_status
+		 WHERE userId = $userId
+		;
+	]]></sql>
+
+
+	<sql id="list"><![CDATA[
+		SELECT *
+		  FROM point
+		 WHERE userId = $userId
+		 ORDER BY id DESC
+		;
+	]]></sql>
+	
+	
+	<sql id="create"><![CDATA[
+		INSERT INTO `point` (
+			id, userId, action, value, description, `datetime`
+		)
+		VALUES (
+			NULL, $userId, '$action', $value, '$!description', '$datetime'
+		);
+	]]></sql>
+	
+	
+	<sql id="sum"><![CDATA[
+		SELECT SUM(value)
+		  FROM point
+		 WHERE userId = $userId
+		;
+	]]></sql>
+</root>

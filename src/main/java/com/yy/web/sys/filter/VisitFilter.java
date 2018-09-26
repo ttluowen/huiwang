@@ -2,6 +2,7 @@ package com.yy.web.sys.filter;
 
 import java.util.Map;
 
+import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,6 +13,7 @@ import com.yy.util.StringUtil;
 import com.yy.web.base.visit.Visit;
 import com.yy.web.config.SystemConfig;
 import com.yy.web.filter.WebFilter;
+import com.yy.web.site.visitrecord.service.VisitRecord;
 
 public class VisitFilter extends WebFilter {
 
@@ -42,6 +44,23 @@ public class VisitFilter extends WebFilter {
 
 
 		return visitSmCode;
+	}
+
+
+	/**
+	 * 访问目录类型拦截器。
+	 * 
+	 * @param request
+	 * @param response
+	 * @param chain
+	 */
+	public int doPathFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) {
+
+		// 记录来访。
+		VisitRecord.record(request, response);
+
+		
+		return super.doPathFilter(request, response, chain);
 	}
 
 

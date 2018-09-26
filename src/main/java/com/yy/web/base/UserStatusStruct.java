@@ -17,6 +17,8 @@ public class UserStatusStruct {
 	private Date loginDatetime;
 	/** 上次签到时间。 */
 	private Date checkinDatetime;
+	/** 用户积分。 */
+	private int point;
 
 	public int getUserId() {
 		return userId;
@@ -40,6 +42,14 @@ public class UserStatusStruct {
 
 	public void setCheckinDatetime(Date checkinDatetime) {
 		this.checkinDatetime = checkinDatetime;
+	}
+
+	public int getPoint() {
+		return point;
+	}
+
+	public void setPoint(int point) {
+		this.point = point;
 	}
 
 }

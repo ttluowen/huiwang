@@ -1,8 +1,11 @@
 package com.yy.web.site.huiwang;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.yy.statuscode.Statuscode;
 import com.yy.statuscode.StatuscodeMap;
 import com.yy.util.MapValue;
 import com.yy.web.Dim;
@@ -20,6 +23,9 @@ import com.yy.web.request.annotation.ApiAction;
 public class ProvinceApi extends Responsor {
 	
 	private static final String SQL_NAMESPACE = "base.province.";
+	
+	private static List<MapValue> list;
+	
 
 	/**
 	 * 构造函数。
@@ -40,6 +46,16 @@ public class ProvinceApi extends Responsor {
 	@ApiAction
 	public StatuscodeMap list() {
 		
-		return dbSelectMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", new MapValue());
+		if (list == null) {
+			list = dbSelect(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", new MapValue());
+		}
+		
+		
+		StatuscodeMap sm = new StatuscodeMap();
+		sm.setCode(Statuscode.SUCCESS);
+		sm.setResult(list);
+		
+		
+		return sm;
 	}
 }

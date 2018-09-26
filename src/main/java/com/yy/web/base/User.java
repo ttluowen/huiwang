@@ -31,6 +31,10 @@ import com.yy.web.base.visit.VisitProp;
 import com.yy.web.config.SystemConfig;
 import com.yy.web.login.LoginOauth;
 import com.yy.web.request.annotation.ApiAction;
+import com.yy.web.request.annotation.Method;
+import com.yy.web.site.huiwang.PointApi;
+import com.yy.web.site.huiwang.PointRule;
+import com.yy.web.site.huiwang.struct.PointRuleStruct;
 
 
 /**
@@ -1248,18 +1252,28 @@ public class User extends Responsor {
 	 * 
 	 * @return
 	 */
-	@ApiAction(login = true)
+	@ApiAction(login = true, methods = {Method.POST})
 	public StatuscodeMap modifyLocation() {
 		
-		String province = getStringParam("province");
-		int city = getIntParam("city");
-		String address = getStringParam("address");
+		MapValue params = getPostParams();
+		if (params == null) {
+			StatuscodeMap sm = new StatuscodeMap();
+			sm.setCode(Statuscode.HTTP_API_PARAM_ERROR);
+			sm.setDescription(Statuscode.HTTP_API_PARAM_ERROR_DESC);
+			return sm;
+		}
+
+		
+		int userId = getUserId();
+		String province = params.getString("province");
+		int cityId = params.getIntValue("cityId");
+		String address = params.getString("address");
 		
 		MapValue sqlParams = new MapValue();
+		sqlParams.put("userId", userId);
 		sqlParams.put("province", province);
-		sqlParams.put("city", city);
+		sqlParams.put("cityId", cityId);
 		sqlParams.put("address", address);
-		sqlParams.put("userId", getUserId());
 		
 		
 		return dbUpdateMap(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "modifyLocation", sqlParams);
@@ -1368,38 +1382,6 @@ public class User extends Responsor {
 	
 	
 	/**
-	 * 创建用户状态记录。
-	 * 
-	 * @param userId
-	 * @return
-	 */
-	public boolean createUserStatus(int userId) {
-		
-		MapValue sqlParams = new MapValue();
-		sqlParams.put("userId", userId);
-		
-		
-		return dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "createUserStatus", sqlParams) > 0;
-	}
-	
-	
-	/**
-	 * 获取用户状态数据。
-	 * 
-	 * @param userId
-	 * @return
-	 */
-	public UserStatusStruct getUserStatus(int userId) {
-
-		MapValue sqlParams = new MapValue();
-		sqlParams.put("userId", userId);
-		
-		
-		return dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "getUserStatus", sqlParams, null, UserStatusStruct.class);
-	}
-	
-	
-	/**
 	 * 签到操作。
 	 * 
 	 * @return
@@ -1413,7 +1395,7 @@ public class User extends Responsor {
 		
 		
 		// 查询上次签到时间。
-		UserStatusStruct userStatus = getUserStatus(userId);
+		UserStatusStruct userStatus = new UserStatus().get(userId);
 		if (userStatus != null && userStatus.getUserId() == userId) {
 			hasRecord = true;
 			Date checkinDatetime = userStatus.getCheckinDatetime();
@@ -1447,10 +1429,15 @@ public class User extends Responsor {
 			// 更新签到时间。
 			if (sm.getCode() == Statuscode.SUCCESS) {
 				if (!hasRecord) {
-					createUserStatus(userId);
+					new UserStatus().create(userId);
 				}
 
 				dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "updateCheckinDatetime", sqlParams);
+				
+				
+				// 增加积分。
+				PointRuleStruct pointRule = PointRule.get(PointRule.ACTION_CHECKIN);
+				PointApi.add(getUserId(), pointRule.getAction(), pointRule.getValue(), pointRule.getDescription());
 			}
 		}
 

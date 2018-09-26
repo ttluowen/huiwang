@@ -31,7 +31,37 @@
 		#if ($cityId && $cityId != 0)
 		   AND cityId = $cityId
 		#end
-		LIMIT 1000
+		LIMIT $beginIndex, $pageSize
+		;
+	]]></sql>
+	
+	<sql id="listCount"><![CDATA[
+		SELECT COUNT(*) AS count
+		  FROM `school`
+		 WHERE 1 = 1
+		#if ($schoolId && $schoolId != 0)
+		   AND schoolId = $schoolId
+		#end
+		#if ($schoolIds && $schoolIds != '')
+		   AND schoolId IN($schoolIds)
+		#end
+		#if ($name && $name != '')
+		   AND name LIKE '%${name}%'
+		#end
+		#if ($headSchoolId && $headSchoolId != -1)
+		   AND headSchoolId = $headSchoolId
+		#else
+		   AND (headSchoolId = 0 || headSchoolId IS NULL)
+		#end
+		#if ($type && $type != 0)
+		   AND type = '$type'
+		#end
+		#if ($province && $province != '')
+		   AND province = '$province'
+		#end
+		#if ($cityId && $cityId != 0)
+		   AND cityId = $cityId
+		#end
 		;
 	]]></sql>
 	
