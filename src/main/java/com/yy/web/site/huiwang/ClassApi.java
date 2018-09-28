@@ -17,6 +17,7 @@ import com.yy.util.MapValue;
 import com.yy.web.Dim;
 import com.yy.web.Responsor;
 import com.yy.web.request.annotation.ApiAction;
+import com.yy.web.request.annotation.Method;
 import com.yy.web.site.huiwang.struct.ClassStruct;
 import com.yy.web.site.huiwang.struct.PointRuleStruct;
 
@@ -142,6 +143,10 @@ public class ClassApi extends Responsor {
 	private MapValue getCreateModifyData() {
 		
 		MapValue data = getPostParams();
+		if (data == null) {
+			data = new MapValue();
+		}
+		
 		String name = data.getString("name");
 		int schoolId = data.getIntValue("schoolId");
 		String year = data.getString("year");
@@ -169,7 +174,7 @@ public class ClassApi extends Responsor {
 	 * 
 	 * @return
 	 */
-	@ApiAction(login = true)
+	@ApiAction(login = true, methods = {Method.POST})
 	public StatuscodeMap create() {
 
 		int userId = getUserId();
@@ -218,7 +223,7 @@ public class ClassApi extends Responsor {
 	 * 
 	 * @return
 	 */
-	@ApiAction(login = true)
+	@ApiAction(login = true, methods = {Method.POST})
 	public StatuscodeMap modify() {
 	
 		MapValue data = getCreateModifyData();
@@ -232,7 +237,7 @@ public class ClassApi extends Responsor {
 	 * 
 	 * @return
 	 */
-	@ApiAction(login = true)
+	@ApiAction(login = true, methods = {Method.POST})
 	public StatuscodeMap rename() {
 
 		MapValue data = getCreateModifyData();

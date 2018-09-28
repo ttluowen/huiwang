@@ -87,6 +87,10 @@ public class SchoolApi extends Responsor {
 	private MapValue getCreateModifyData() {
 		
 		MapValue data = getPostParams();
+		if (data == null) {
+			data = new MapValue();
+		}
+		
 		String name = data.getString("name");
 		String historyNames = data.getString("historyNames");
 		int headSchoolId = data.getIntValue("headSchoolId");

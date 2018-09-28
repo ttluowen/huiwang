@@ -31,7 +31,11 @@
 		#if ($cityId && $cityId != 0)
 		   AND cityId = $cityId
 		#end
-		LIMIT $beginIndex, $pageSize
+		#if ($beginIndex && $pageSize)
+			LIMIT $beginIndex, $pageSize
+		#else
+			LIMIT 100
+		#end
 		;
 	]]></sql>
 	

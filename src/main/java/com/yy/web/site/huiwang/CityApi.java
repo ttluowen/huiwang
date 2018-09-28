@@ -10,6 +10,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.yy.statuscode.Statuscode;
 import com.yy.statuscode.StatuscodeMap;
 import com.yy.statuscode.StatuscodeTypeMap;
@@ -84,13 +86,38 @@ public class CityApi extends Responsor {
 	protected StatuscodeTypeMap<List<CityStruct>> list(MapValue params) {
 		
 		if (cityList == null) {
-			cityList = dbSelect(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", params, null, CityStruct.class);
+			cityList = dbSelect(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", null, null, CityStruct.class);
+		}
+		
+		
+		String province = null;
+		int level = 0;
+		if (params != null) {
+			province = params.getString("province");
+			level = params.getIntValue("level");
+		}
+		
+		
+		List<CityStruct> list = new ArrayList<>();
+		for (CityStruct item : cityList) {
+			boolean right = false;
+
+			if (StringUtils.isNotBlank(province)) {
+				right = item.getProvince().equals(province);
+			}
+			if (right && level != 0) {
+				right = item.getLevel() == level;
+			}
+			
+			if (right) {
+				list.add(item);
+			}
 		}
 
 
 		StatuscodeTypeMap<List<CityStruct>> sm = new StatuscodeTypeMap<>();
 		sm.setCode(Statuscode.SUCCESS);
-		sm.setResult(cityList);
+		sm.setResult(list);
 		
 		
 		return sm;
