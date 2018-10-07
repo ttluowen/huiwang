@@ -4,40 +4,61 @@
 	<namespace>total</namespace>
 
 
-	<sql id="schoolCount"><![CDATA[
+	<sql id="citySchoolCount"><![CDATA[
 		SELECT COUNT(*) AS count
 		  FROM school
-		 WHERE 1 = 1
-		#if ($type && $type != '')
-		   AND type = '$type'
-		#end
+		 WHERE type = '$type'
+		   AND cityId = $cityId
 		;
 	]]></sql>
 	
 	
-	<sql id="schoolClassCount"><![CDATA[
-		SELECT schoolId, COUNT(*) AS count
-		  FROM `class`
-		 WHERE schoolId IN($schoolId)
-		 GROUP BY schoolId
+	<sql id="schoolCount"><![CDATA[
+		SELECT COUNT(*) AS count
+		  FROM school
+		 WHERE type = '$type'
 		;
 	]]></sql>
 	
 	
 	<sql id="schoolUserCount"><![CDATA[
-		SELECT schoolId, COUNT(*) AS count
+		SELECT COUNT(*) AS count
 		  FROM class_user
-		 WHERE schoolId IN($schoolId)
-		 GROUP BY schoolId
+		 WHERE schoolId = $schoolId
+		;
+	]]></sql>
+	
+	
+	<sql id="schoolClassCount"><![CDATA[
+		SELECT COUNT(*) AS count
+		  FROM `class`
+		 WHERE schoolId = $schoolId
+		;
+	]]></sql>
+	
+	
+	<sql id="classCount"><![CDATA[
+		SELECT COUNT(*) AS count
+		  FROM `class`
 		;
 	]]></sql>
 	
 	
 	<sql id="classUserCount"><![CDATA[
-		SELECT classId, COUNT(*) AS count
+		SELECT COUNT(*) AS count
 		  FROM class_user
-		 WHERE classId IN($classId)
-		 GROUP BY classId
+		 WHERE classId = $classId
+		;
+	]]></sql>
+	
+	
+	<sql id="classUserCityCount"><![CDATA[
+		SELECT b.cityId, COUNT(b.cityId) AS count
+		  FROM class_user AS C
+		  LEFT JOIN base_user AS b
+		    ON c.userId = b.userId
+		 WHERE classId = $classId
+		 GROUP BY b.cityId
 		;
 	]]></sql>
 	

@@ -18,6 +18,7 @@ import com.yy.web.Dim;
 import com.yy.web.Responsor;
 import com.yy.web.request.annotation.ApiAction;
 import com.yy.web.request.annotation.Method;
+import com.yy.web.site.huiwang.cache.Cache;
 import com.yy.web.site.huiwang.struct.ClassStruct;
 import com.yy.web.site.huiwang.struct.PointRuleStruct;
 
@@ -182,14 +183,19 @@ public class ClassApi extends Responsor {
 		MapValue data = getCreateModifyData();
 		data.put("datetime", DateUtil.get(1));
 		data.put("creator", userId);
+		
+		String name = data.getString("name");
+		int schoolId = data.getIntValue("schoolId");
+		int year = data.getIntValue("year");
+		String field = data.getString("field");
 
 
 		// 检查该学校是否已创建。
 		MapValue sqlParams = new MapValue();
-		sqlParams.put("name", data.getString("name"));
-		sqlParams.put("schoolId", data.getIntValue("schoolId"));
-		sqlParams.put("year", data.getIntValue("year"));
-		sqlParams.put("field", data.getString("field"));
+		sqlParams.put("name", name);
+		sqlParams.put("schoolId", schoolId);
+		sqlParams.put("year", year);
+		sqlParams.put("field", field);
 		sqlParams.put("userId", userId);
 
 		StatuscodeMap sm = new StatuscodeMap();
@@ -211,6 +217,10 @@ public class ClassApi extends Responsor {
 			// 增加积分。
 			PointRuleStruct pointRule = PointRule.get(PointRule.ACTION_CREATE_CLASS);
 			PointApi.add(getUserId(), pointRule.getAction(), pointRule.getValue(), pointRule.getDescription());
+
+			// 清理缓存。
+			Cache.delClassCount();
+			Cache.delSchoolClassCount(schoolId);
 		}
 			
 

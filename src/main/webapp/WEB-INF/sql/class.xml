@@ -76,7 +76,7 @@
 	
 	
 	<sql id="getClassUsers"><![CDATA[
-		SELECT userId, nickname, avatar, gender, province, city
+		SELECT userId, nickname, avatar, gender, province, cityId
 		  FROM base_user
 		 WHERE userId IN (
 		 			SELECT userId

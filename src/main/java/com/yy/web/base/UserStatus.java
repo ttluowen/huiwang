@@ -36,7 +36,7 @@ public class UserStatus {
 		sqlParams.put("userId", userId);
 		
 		
-		return Responsor.getInstance().dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "getUserStatus", sqlParams, null, UserStatusStruct.class);
+		return Responsor.getInstance().dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "query", sqlParams, null, UserStatusStruct.class);
 	}
 	
 	
@@ -72,6 +72,6 @@ public class UserStatus {
 		sqlParams.put("userId", userId);
 		
 		
-		return Responsor.getInstance().dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "createUserStatus", sqlParams) > 0;
+		return Responsor.getInstance().dbUpdate(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "create", sqlParams) > 0;
 	}
 }

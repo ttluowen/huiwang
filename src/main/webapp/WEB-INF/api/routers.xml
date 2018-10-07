@@ -39,5 +39,7 @@
 	<path name="class" class="com.yy.web.site.huiwang.ClassApi" />
 	<path name="school" class="com.yy.web.site.huiwang.SchoolApi" />
 	<path name="total" class="com.yy.web.site.huiwang.TotalApi" />
+	
+	<path name="mining" class="com.yy.web.site.huiwang.MiningApi" />
 </root>
 

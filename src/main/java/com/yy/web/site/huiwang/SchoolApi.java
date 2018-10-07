@@ -18,6 +18,7 @@ import com.yy.web.Responsor;
 import com.yy.web.request.annotation.ApiAction;
 import com.yy.web.request.annotation.Method;
 import com.yy.web.resultset.PageListResultStruct;
+import com.yy.web.site.huiwang.cache.Cache;
 import com.yy.web.site.huiwang.struct.PointRuleStruct;
 import com.yy.web.site.huiwang.struct.SchoolStruct;
 
@@ -134,12 +135,16 @@ public class SchoolApi extends Responsor {
 		MapValue data = getCreateModifyData();
 		data.put("datetime", DateUtil.get(1));
 		
+		String name = data.getString("name");
+		String type = data.getString("type");
+		int cityId = data.getIntValue("cityId");
+		
 		
 		// 检查该学校是否已创建。
 		MapValue sqlParams = new MapValue();
-		sqlParams.put("name", data.getString("name"));
-		sqlParams.put("type", data.getIntValue("type"));
-		sqlParams.put("cityId", data.getIntValue("cityId"));
+		sqlParams.put("name", name);
+		sqlParams.put("type", type);
+		sqlParams.put("cityId", cityId);
 
 		StatuscodeMap sm = new StatuscodeMap();
 		MapValue exist = dbSelectOne(Dim.DB_SOURCE_MYSQL, SQL_NAMESPACE + "list", sqlParams);
@@ -154,6 +159,10 @@ public class SchoolApi extends Responsor {
 			// 增加积分。
 			PointRuleStruct pointRule = PointRule.get(PointRule.ACTION_CREATE_SCHOOL);
 			PointApi.add(getUserId(), pointRule.getAction(), pointRule.getValue(), pointRule.getDescription());
+
+			// 清理缓存。
+			Cache.delSchoolCount(type);
+			Cache.delCitySchoolCount(type, cityId);
 		}
 		
 		

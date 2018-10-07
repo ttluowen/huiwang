@@ -6,6 +6,7 @@ import javax.servlet.ServletContextListener;
 import com.yy.log.Logger;
 import com.yy.web.RequestRouter;
 import com.yy.web.config.SystemConfig;
+import com.yy.web.service.redis.RedisManage;
 import com.yy.web.sys.startupcheck.StartupChecker;
 import com.yy.web.sys.upgrade.Upgrade;
 
@@ -56,7 +57,7 @@ public class InitListener implements ServletContextListener {
 		 * 配置在 configs.properties 中读取 redisHost、redisPort、redisAuth。
 		 * 默认主机地址 127.0.0.1，端口号 6379，不无密码。
 		 */
-//		new RedisManage().init();
+		new RedisManage().init();
 
 
 		/*

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<!-- 命名空间。 -->
+	<namespace>mining</namespace>
+
+
+	<sql id="query"><![CDATA[
+		SELECT *
+		  FROM mining
+		 WHERE userId = $userId
+		   AND `date` = '$date'
+		;
+	]]></sql>
+	
+	
+	<sql id="create"><![CDATA[
+		INSERT INTO `mining` (
+			id, userId, `date`, `datetime`, mined
+		)
+		VALUES (
+			NULL, $userId, '$date', '$datetime', $mined
+		);
+	]]></sql>
+</root>

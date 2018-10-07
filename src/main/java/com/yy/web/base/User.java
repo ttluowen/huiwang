@@ -34,6 +34,7 @@ import com.yy.web.request.annotation.ApiAction;
 import com.yy.web.request.annotation.Method;
 import com.yy.web.site.huiwang.PointApi;
 import com.yy.web.site.huiwang.PointRule;
+import com.yy.web.site.huiwang.cache.Cache;
 import com.yy.web.site.huiwang.struct.PointRuleStruct;
 
 
@@ -409,6 +410,9 @@ public class User extends Responsor {
 					int userId = registFromWechat(params);
 					if (userId != 0) {
 						profile = getProfile(userId);
+
+						// 清理缓存。
+						cleanCountCache();
 					} else {
 						sm.setDescription("注释来自微信的账号失败");
 						return sm;
@@ -839,6 +843,9 @@ public class User extends Responsor {
 			if (!StringUtil.isEmpty(code)) {
 				sm.setCode(Statuscode.SUCCESS);
 				sm.setDescription(Statuscode.SUCCESS_DESC);
+				
+				// 清理缓存。
+				cleanCountCache();
 			} else {
 				sm.setDescription("发送邮箱验证码失败");
 			}
@@ -1443,5 +1450,14 @@ public class User extends Responsor {
 
 
 		return sm;
+	}
+	
+	
+	/**
+	 * 清理统计缓存。
+	 */
+	private void cleanCountCache() {
+
+		Cache.delUserCount();
 	}
 }
